@@ -1,101 +1,116 @@
-import Image from "next/image";
+import Image from "next/image"
+import { Play, Users } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import EpisodeCard from "@/components/episode-card"
+import ListenerFeedback from "@/components/listener-feedback"
+import TopEpisodes from "@/components/top-episodes"
+import { fetchYouTubeVideos } from "./actions/youtube"
+import Link from "next/link"
+export default async function Home() {
+  const videos = await fetchYouTubeVideos()
+  const latestVideos = videos.slice(0, 3) // Get the 3 most recent videos
 
-export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-white">
+      {/* Hero Banner */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black to-gray-900">
+        <div className="container mx-auto px-4 py-12 relative z-10 text-white text-center">
+          <Image
+            src="/bgUp.png"
+            alt="Algo Para Contar Podcast"
+            width={300}
+            height={300}
+            className="mx-auto mb-8 animate-float w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64"
+          />
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 bg-clip-text h-20 text-transparent bg-gradient-to-r from-white to-[#FF7B7B]">
+            Algo Para Contar
+          </h1>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Un podcast donde las historias cobran vida y las conversaciones te hacen pensar, reír y sentir.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" className="bg-[#FF7B7B] hover:bg-[#ff6262] gap-2 w-full sm:w-auto">
+              <Play className="w-5 h-5" />
+              Escuchar último episodio
+            </Button>
+            
+            <Button
+              size="lg"
+              variant="outline"
+              className="gap-2 border-white text-black hover:bg-white/80 w-full sm:w-auto"
+            >
+              <Users className="w-5 h-5" />
+              <Link href="/ser-invitado"> 
+              Ser invitado
+              </Link>
+            </Button>
+            
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-12 bg-[#FF7B7B]">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-white text-center">
+            <div className="p-6 rounded-lg backdrop-blur-sm bg-white/10">
+              <div className="text-3xl sm:text-4xl font-bold mb-2">100+</div>
+              <div className="text-base sm:text-lg">Episodios</div>
+            </div>
+            <div className="p-6 rounded-lg backdrop-blur-sm bg-white/10">
+              <div className="text-3xl sm:text-4xl font-bold mb-2">50K+</div>
+              <div className="text-base sm:text-lg">Oyentes mensuales</div>
+            </div>
+            <div className="p-6 rounded-lg backdrop-blur-sm bg-white/10 sm:col-span-2 md:col-span-1">
+              <div className="text-3xl sm:text-4xl font-bold mb-2">200+</div>
+              <div className="text-base sm:text-lg">Historias compartidas</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Top Episodes */}
+      <section className="py-12 sm:py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Episodios Más Escuchados</h2>
+          <p className="text-lg sm:text-xl text-muted-foreground text-center mb-8 sm:mb-12">
+            Los favoritos de nuestra audiencia
+          </p>
+          <TopEpisodes />
+        </div>
+      </section>
+
+      {/* Latest Episodes */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-4">Últimos Episodios</h2>
+          <p className="text-xl text-muted-foreground text-center mb-12">
+            Descubre nuestras conversaciones más recientes
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {latestVideos.map((video ) => (
+              <EpisodeCard key={video.id} episode={video} />
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button size="lg" variant="outline" className="gap-2">
+              Ver todos los episodios
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Listener Feedback Section */}
+      <section className="py-12 sm:py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Tu Voz Importa</h2>
+          <p className="text-lg sm:text-xl text-muted-foreground text-center mb-8 sm:mb-12">
+            Comparte tus ideas, sugerencias o preguntas para futuros episodios
+          </p>
+          <ListenerFeedback />
+        </div>
+      </section>
     </div>
-  );
+  )
 }
+
