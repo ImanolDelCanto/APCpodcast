@@ -2,7 +2,7 @@ import Image from "next/image"
 
 export default function AboutUs() {
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <div className="min-h-screen bg-white ">
       <div className="container mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">Sobre Nosotros</h1>
 

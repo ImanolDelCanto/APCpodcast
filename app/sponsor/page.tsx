@@ -1,8 +1,40 @@
+"use client"
+
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Coffee } from "lucide-react"
+import { ChevronDown, ChevronUp } from "lucide-react"
+
+const sponsorOptions = [
+  {
+    title: "Paquete Básico",
+    price: "$100",
+    description: "Una mención de 30 segundos al inicio del episodio",
+    episodes: 1,
+  },
+  {
+    title: "Paquete Estándar",
+    price: "$250",
+    description: "Una mención de 60 segundos en medio del episodio",
+    episodes: 2,
+  },
+  {
+    title: "Paquete Premium",
+    price: "$500",
+    description: "Dos menciones de 30 segundos y una recomendación personal del host",
+    episodes: 3,
+  },
+  {
+    title: "Paquete VIP",
+    price: "$1000",
+    description: "Episodio completo dedicado a tu marca con múltiples menciones",
+    episodes: 1,
+  },
+]
 
 export default function Sponsor() {
+  const [showOptions, setShowOptions] = useState(false)
+
   return (
     <div className="min-h-screen bg-white pt-20">
       <div className="container mx-auto px-4 py-16">
@@ -39,31 +71,37 @@ export default function Sponsor() {
               <CardDescription>Promociona tu producto o servicio</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">Compra menciones individuales en nuestros episodios:</p>
-              <ul className="list-disc list-inside space-y-2 mb-6">
-                <li>Mención de 30 segundos al inicio del episodio</li>
-                <li>Mención de 60 segundos en medio del episodio</li>
-                <li>Recomendación personal del host</li>
-              </ul>
-              <Button className="w-full">Ver opciones de menciones</Button>
+            <p className="mb-4">Compra menciones individuales en nuestros episodios:</p>
+            <ul className="list-disc list-inside space-y-2 mb-6">
+              <li>Mención de 30 segundos al inicio del episodio</li>
+              <li>Mención de 60 segundos en medio del episodio</li>
+              <li>Recomendación personal del host</li>
+            </ul>
+              <Button className="w-full mb-4" onClick={() => setShowOptions(!showOptions)}>
+                {showOptions ? "Ocultar opciones" : "Ver opciones de menciones"}
+                {showOptions ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
+              </Button>
+              {showOptions && (
+                <ul className="space-y-4 mt-4">
+                  {sponsorOptions.map((option, index) => (
+                    <li key={index} className="border-b pb-4 last:border-b-0">
+                      <h3 className="font-bold text-lg">{option.title}</h3>
+                      <p className="text-muted-foreground">{option.description}</p>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="font-semibold text-primary">{option.price}</span>
+                        <span>{option.episodes} episodio(s)</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </CardContent>
           </Card>
-        </div>
-
-        <div className="max-w-md mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">Apóyanos con un Cafecito</h2>
-
-          <p className="text-muted-foreground mb-6">
-            Si disfrutas de nuestro contenido y quieres apoyarnos de una manera más personal, puedes invitarnos a un
-            cafecito. Cada aporte nos ayuda a seguir mejorando.
-          </p>
-          <Button className="bg-[#FFDD00] text-black hover:bg-[#FFE234]">
-            <Coffee className="w-5 h-5 mr-2" />
-            Invitarnos un cafecito
-          </Button>
         </div>
       </div>
     </div>
   )
 }
+
+
 

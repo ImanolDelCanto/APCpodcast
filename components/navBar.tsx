@@ -48,6 +48,9 @@ export default function Navbar() {
             <Link href="/" className={linkClass(pathname === "/")}>
               Inicio
             </Link>
+            <Link href="/episodios" className={linkClass(pathname === "/episodios")}>
+              Episodios
+            </Link>
             <Link href="/sobre-nosotros" className={linkClass(pathname === "/sobre-nosotros")}>
               Sobre Nosotros
             </Link>
