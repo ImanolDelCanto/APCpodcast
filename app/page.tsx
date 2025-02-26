@@ -208,9 +208,9 @@ export default function Home() {
       <section className="py-12 sm:py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Tu Voz Importa</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Seccion de comentarios</h2>
             <p className="text-lg sm:text-xl text-muted-foreground text-center mb-8 sm:mb-12">
-              Comparte tus ideas, sugerencias o simplemente saluda
+              Comparti tus ideas, sugerencias o simplemente saluda!
             </p>
           </motion.div>
           <CommentSection />
