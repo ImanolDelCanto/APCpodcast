@@ -6,11 +6,12 @@ export interface Video {
   id: string
   title: string
   link: string
-  duration: number;
+  duration: number
   published: string
   thumbnail: string
   description: string
 }
+
 
 interface YouTubeEntry {
     ["yt:videoId"]: string

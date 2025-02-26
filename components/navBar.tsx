@@ -25,7 +25,7 @@ export default function Navbar() {
     ? `fixed w-full z-50 transition-all duration-300 ${
         isScrolled ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-transparent"
       }`
-    : "bg-white shadow-md"
+    : "fixed w-full z-50 bg-white shadow-md"
 
   const linkClass = (isActive: boolean) =>
     `${
@@ -74,10 +74,17 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white absolute top-16 left-0 right-0 shadow-lg">
+          <div className="md:hidden bg-white absolute top-16 left-0 right-0 shadow-lg z-50">
             <div className="flex flex-col p-4 space-y-4">
               <Link href="/" className="text-gray-600 hover:text-[#FF7B7B]" onClick={() => setIsMenuOpen(false)}>
                 Inicio
+              </Link>
+              <Link
+                href="/episodios"
+                className="text-gray-600 hover:text-[#FF7B7B]"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Episodios
               </Link>
               <Link
                 href="/sobre-nosotros"

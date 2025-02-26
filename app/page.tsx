@@ -5,7 +5,6 @@ import Image from "next/image"
 import { Play, Mic, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import EpisodeCard from "@/components/episode-card"
-import ListenerFeedback from "@/components/listener-feedback"
 import TopEpisodes from "@/components/top-episodes"
 import Link from "next/link"
 import QuienesSomos from "@/components/quienes-somos"
@@ -73,7 +72,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                className="gap-2 border-white text-black hover:bg-white/ w-full sm:w-auto transform hover:scale-105 transition-transform duration-300"
+                className="gap-2 border-white text-black hover:bg-white/90 w-full sm:w-auto transform hover:scale-105 transition-transform duration-300"
               >
                 <Mic className="w-5 h-5" />
                 Ser invitado
@@ -204,30 +203,16 @@ export default function Home() {
       {/* Cafecito Support Section */}
       <CafecitoSupport />
 
-
+      {/* Comments Section */}
       <section className="py-12 sm:py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Seccion de comentarios</h2>
-            <p className="text-lg sm:text-xl text-muted-foreground text-center mb-8 sm:mb-12">
-              Comparti tus ideas, sugerencias o simplemente saluda!
-            </p>
-          </motion.div>
-          <CommentSection />
-        </div>
-      </section>
-
-
-      {/* Listener Feedback Section */}
-      <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Tu Voz Importa</h2>
             <p className="text-lg sm:text-xl text-muted-foreground text-center mb-8 sm:mb-12">
-              Comparte tus ideas, sugerencias o preguntas para futuros episodios
+            Comparti tus ideas, sugerencias, preguntas para futuros episodios o simplemente saludá!
             </p>
           </motion.div>
-          <ListenerFeedback />
+          <CommentSection />
         </div>
       </section>
     </div>
