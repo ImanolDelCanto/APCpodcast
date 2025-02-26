@@ -13,6 +13,7 @@ import CafecitoSupport from "@/components/cafecito"
 import { motion, useAnimation } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { fetchYouTubeVideos, type Video } from "./actions/youtube"
+import { CommentSection } from "@/components/commet-section"
 
 export default function Home() {
   const controls = useAnimation()
@@ -202,6 +203,20 @@ export default function Home() {
 
       {/* Cafecito Support Section */}
       <CafecitoSupport />
+
+
+      <section className="py-12 sm:py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Tu Voz Importa</h2>
+            <p className="text-lg sm:text-xl text-muted-foreground text-center mb-8 sm:mb-12">
+              Comparte tus ideas, sugerencias o simplemente saluda
+            </p>
+          </motion.div>
+          <CommentSection />
+        </div>
+      </section>
+
 
       {/* Listener Feedback Section */}
       <section className="py-12 sm:py-16">
