@@ -1,9 +1,20 @@
-"use client"
+'use client'
+
+import { useState, ChangeEvent, FormEvent } from "react"
 import { motion } from "framer-motion"
-import { DollarSign, Briefcase, Users, TrendingUp } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { toast } from "@/hooks/use-toast"
+import Link from "next/link"
+import { Briefcase } from "lucide-react"
+import Image from "next/image"
+
+// Definimos el tipo para el estado del formulario
+interface FormData {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -25,9 +36,73 @@ const staggerContainer = {
 }
 
 export default function SponsorPage() {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
+  // Función para manejar el cambio de los valores del formulario
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
+  // Función para manejar el envío del formulario
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    // Validación básica de campos
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      toast({
+        title: "Error",
+        description: "Por favor, llena todos los campos.",
+        variant: "destructive",
+      })
+      setIsSubmitting(false)
+      return
+    }
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+      if (response.ok) {
+        toast({
+          title: "Mensaje enviado",
+          description: "Gracias por tu interés en patrocinarnos. Nos pondremos en contacto pronto.",
+        })
+        setFormData({ name: "", email: "", subject: "", message: "" })
+      } else {
+        throw new Error(result.error || "Hubo un problema al enviar el mensaje.")
+      }
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error)
+      toast({
+        title: "Error",
+        description: "Hubo un problema al enviar el mensaje. Intenta nuevamente más tarde.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 text-white overflow-x-hidden relative pt-20">
-      {/* Decorative background elements */}
+      {/* Fondo decorativo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl z-0" />
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-500/20 rounded-full blur-3xl z-0" />
@@ -48,6 +123,7 @@ export default function SponsorPage() {
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center mb-16 md:mb-24"
         >
+          {/* Imagen o contenido sobre la oportunidad de patrocinio */}
           <motion.div variants={fadeInUp} className="relative order-2 md:order-1">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <Image
@@ -57,25 +133,10 @@ export default function SponsorPage() {
                 height={600}
                 width={600}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
-
-              <motion.div
-                className="absolute -bottom-6 -right-6 bg-purple-600 p-4 rounded-full shadow-lg"
-                animate={{
-                  y: [-5, 5],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                }}
-              >
-                <DollarSign className="w-6 h-6 text-white" />
-              </motion.div>
             </div>
           </motion.div>
 
+          {/* Información sobre los beneficios del patrocinio */}
           <motion.div variants={fadeInUp} className="space-y-6 order-1 md:order-2">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-purple-300">¿Por qué patrocinar?</h2>
             <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
@@ -100,54 +161,12 @@ export default function SponsorPage() {
           </motion.div>
         </motion.div>
 
+
+        {/* Formulario de contacto */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="relative mb-16 md:mb-24"
-        >
-          <motion.div variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-8 text-center text-purple-300">
-            Beneficios del Patrocinio
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              {
-                icon: <Users className="w-8 h-8" />,
-                title: "Alcance",
-                text: "Llega a miles de oyentes comprometidos y curiosos",
-              },
-              {
-                icon: <TrendingUp className="w-8 h-8" />,
-                title: "Crecimiento",
-                text: "Asocia tu marca con contenido de calidad y en crecimiento",
-              },
-              {
-                icon: <DollarSign className="w-8 h-8" />,
-                title: "ROI",
-                text: "Obtén un retorno de inversión medible y efectivo",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 md:p-8 text-center hover:bg-white/10 transition-colors duration-300"
-              >
-                <div className="bg-purple-600/30 p-4 rounded-full w-fit mx-auto mb-6">{item.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-base md:text-lg text-gray-300">{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Contact Form */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          animate="visible"
           className="relative"
           id="contact-form"
         >
@@ -156,7 +175,7 @@ export default function SponsorPage() {
           </motion.div>
 
           <div className="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-lg p-8">
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">
                   Nombre
@@ -165,6 +184,8 @@ export default function SponsorPage() {
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
                   required
                 />
@@ -177,18 +198,22 @@ export default function SponsorPage() {
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="company" className="block text-sm font-medium text-gray-200 mb-1">
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-200 mb-1">
                   Empresa
                 </label>
                 <input
                   type="text"
-                  id="company"
-                  name="company"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
                   className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
                   required
                 />
@@ -200,14 +225,16 @@ export default function SponsorPage() {
                 <textarea
                   id="message"
                   name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   rows={4}
                   className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
                   required
                 ></textarea>
               </div>
               <div>
-                <Button type="submit" className="w-full bg-[#FF7B7B] hover:bg-[#ff6262]">
-                  Enviar mensaje
+                <Button type="submit" className="w-full bg-[#FF7B7B] hover:bg-[#ff6262]" disabled={isSubmitting}>
+                  {isSubmitting ? "Enviando..." : "Enviar mensaje"}
                 </Button>
               </div>
             </form>
@@ -217,4 +244,3 @@ export default function SponsorPage() {
     </div>
   )
 }
-

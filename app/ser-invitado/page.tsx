@@ -1,13 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { toast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
@@ -17,39 +17,42 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Por favor ingresa un email válido.",
   }),
-  occupation: z.string().min(2, {
+  subject: z.string().min(2, {
     message: "Por favor ingresa tu ocupación.",
   }),
-  reason: z.string().min(50, {
+  message: z.string().min(50, {
     message: "Por favor explica en al menos 50 caracteres por qué quieres aparecer en el podcast.",
   }),
 })
 
-export default function SerInvitado() {
+export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
-      occupation: "",
-      reason: "",
+      subject: "",
+      message: "",
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true)
-    // Here you would typically send the form data to your backend
-    console.log(values)
-    setTimeout(() => {
+
+    try {
+      console.log(values)
+      setTimeout(() => {
+        setIsSubmitting(false)
+        toast({
+          title: "Solicitud enviada",
+          description: "Gracias por tu interés. Revisaremos tu solicitud y te contactaremos pronto.",
+        })
+        form.reset()
+      }, 1000)
+    } finally {
       setIsSubmitting(false)
-      toast({
-        title: "Solicitud enviada",
-        description: "Gracias por tu interés. Revisaremos tu solicitud y te contactaremos pronto.",
-      })
-      form.reset()
-    }, 1000)
+    }
   }
 
   return (
@@ -87,7 +90,7 @@ export default function SerInvitado() {
               />
               <FormField
                 control={form.control}
-                name="occupation"
+                name="subject"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Ocupación</FormLabel>
@@ -100,7 +103,7 @@ export default function SerInvitado() {
               />
               <FormField
                 control={form.control}
-                name="reason"
+                name="message"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>¿Por qué quieres aparecer en el podcast?</FormLabel>
@@ -128,4 +131,3 @@ export default function SerInvitado() {
     </div>
   )
 }
-
