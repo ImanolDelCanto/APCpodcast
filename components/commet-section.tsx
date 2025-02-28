@@ -1,7 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useState, useCallback } from "react"
+
+import { useEffect, useState, useCallback, memo, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -10,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { formatDistanceToNow } from "date-fns"
 import { es } from "date-fns/locale"
 import { toast } from "@/hooks/use-toast"
-import { MessageSquare, ChevronDown, ChevronUp, Send } from "lucide-react"
+import { MessageSquare, ChevronDown, ChevronUp, Send, Heart } from "lucide-react"
 
 interface Comment {
   id: string
@@ -20,16 +21,86 @@ interface Comment {
   parentId: string | null
 }
 
-export function CommentSection() {
+// Componente de comentario individual memoizado
+const CommentItem = memo(({ comment, index }: { comment: Comment; index: number }) => {
+  const [isLiked, setIsLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 10))
+  const commentRef = useRef<HTMLDivElement>(null)
+
+  const toggleLike = () => {
+    if (isLiked) {
+      setLikeCount((prev) => prev - 1)
+    } else {
+      setLikeCount((prev) => prev + 1)
+    }
+    setIsLiked(!isLiked)
+  }
+
+  return (
+    <motion.div
+      ref={commentRef}
+      key={comment.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
+      whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+    >
+      <div className="flex items-start gap-4">
+        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          <Avatar className="w-10 h-10 border">
+            <AvatarFallback className="bg-[#FF7B7B]/10 text-[#FF7B7B]">{comment.name[0].toUpperCase()}</AvatarFallback>
+          </Avatar>
+        </motion.div>
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-semibold">{comment.name}</span>
+            <span className="text-sm text-muted-foreground">
+              {formatDistanceToNow(new Date(comment.createdAt), { locale: es, addSuffix: true })}
+            </span>
+          </div>
+          <p className="text-gray-700">{comment.content}</p>
+
+          <div className="flex items-center gap-2 mt-3">
+            <motion.button
+              onClick={toggleLike}
+              className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#FF7B7B] transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Heart className={`w-4 h-4 ${isLiked ? "fill-[#FF7B7B] text-[#FF7B7B]" : ""}`} />
+              <span>{likeCount}</span>
+            </motion.button>
+
+            <motion.button
+              className="text-sm text-gray-500 hover:text-[#FF7B7B] transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Responder
+            </motion.button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+})
+
+CommentItem.displayName = "CommentItem"
+
+const CommentSection = () => {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [name, setName] = useState("")
   const [content, setContent] = useState("")
   const [visibleCount, setVisibleCount] = useState(5)
+  const sectionRef = useRef<HTMLDivElement>(null)
 
   const fetchComments = useCallback(async () => {
     try {
+      setLoading(true)
       const response = await fetch("/api/comments")
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -52,71 +123,78 @@ export function CommentSection() {
     fetchComments()
   }, [fetchComments])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!name.trim() || !content.trim()) {
-      toast({
-        title: "Error",
-        description: "Por favor completa todos los campos",
-        variant: "destructive",
-      })
-      return
-    }
-
-    setIsSubmitting(true)
-    try {
-      const response = await fetch("/api/comments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          content: content.trim(),
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault()
+      if (!name.trim() || !content.trim()) {
+        toast({
+          title: "Error",
+          description: "Por favor completa todos los campos",
+          variant: "destructive",
+        })
+        return
       }
 
-      const data = await response.json()
-      if (data.error) {
-        throw new Error(data.error)
+      setIsSubmitting(true)
+      try {
+        const response = await fetch("/api/comments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            content: content.trim(),
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const newComment = await response.json()
+        setComments((prev) => [newComment, ...prev])
+
+        toast({
+          title: "¡Comentario enviado!",
+          description: "Tu comentario ha sido publicado exitosamente.",
+        })
+
+        setName("")
+        setContent("")
+      } catch (error) {
+        console.error("Error submitting comment:", error)
+        toast({
+          title: "Error",
+          description: "No se pudo enviar el comentario. Intenta nuevamente.",
+          variant: "destructive",
+        })
+      } finally {
+        setIsSubmitting(false)
       }
+    },
+    [name, content],
+  )
 
-      toast({
-        title: "¡Comentario enviado!",
-        description: "Tu comentario ha sido publicado exitosamente.",
-      })
-
-      setName("")
-      setContent("")
-      fetchComments()
-    } catch (error) {
-      console.error("Error submitting comment:", error)
-      toast({
-        title: "Error",
-        description: "No se pudo enviar el comentario. Intenta nuevamente.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const loadMoreComments = () => {
+  const loadMoreComments = useCallback(() => {
     setVisibleCount((prev) => prev + 5)
-  }
+  }, [])
 
-  const hideComments = () => {
+  const hideComments = useCallback(() => {
     setVisibleCount(5)
-  }
+    // Scroll back to the top of the comments section
+    sectionRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [])
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto" ref={sectionRef}>
       <div className="space-y-8">
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <motion.div
+          className="bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
             <MessageSquare className="w-6 h-6 text-[#FF7B7B]" />
             Comentarios ({comments.length})
@@ -128,31 +206,52 @@ export function CommentSection() {
                 placeholder="Tu nombre"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="flex-1"
+                className="flex-1 focus:ring-[#FF7B7B] focus:border-[#FF7B7B] transition-all duration-300"
                 disabled={isSubmitting}
               />
-              <Button type="submit" className="bg-[#FF7B7B] hover:bg-[#ff6262] gap-2" disabled={isSubmitting}>
-                <Send className="w-4 h-4" />
-                {isSubmitting ? "Enviando..." : "Publicar"}
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  type="submit"
+                  className="bg-[#FF7B7B] hover:bg-[#ff6262] gap-2 w-full sm:w-auto transition-all duration-300 shadow hover:shadow-lg"
+                  disabled={isSubmitting}
+                >
+                  <Send className="w-4 h-4" />
+                  {isSubmitting ? (
+                    <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      Enviando...
+                    </motion.span>
+                  ) : (
+                    <span>Publicar</span>
+                  )}
+                </Button>
+              </motion.div>
             </div>
             <Textarea
               placeholder="¿Qué te gustaría compartir?"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="min-h-[100px]"
+              className="min-h-[100px] focus:ring-[#FF7B7B] focus:border-[#FF7B7B] transition-all duration-300"
               disabled={isSubmitting}
             />
           </form>
-        </div>
+        </motion.div>
 
         <div className="space-y-4">
           <AnimatePresence>
             {loading ? (
-              <div className="text-center py-8">
-                <div className="animate-spin w-8 h-8 border-4 border-[#FF7B7B] border-t-transparent rounded-full mx-auto mb-4"></div>
+              <motion.div
+                className="text-center py-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div
+                  className="w-8 h-8 border-4 border-[#FF7B7B] border-t-transparent rounded-full mx-auto mb-4"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                />
                 <p>Cargando comentarios...</p>
-              </div>
+              </motion.div>
             ) : comments.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -165,48 +264,36 @@ export function CommentSection() {
             ) : (
               <>
                 {comments.slice(0, visibleCount).map((comment, index) => (
-                  <motion.div
-                    key={comment.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-start gap-4">
-                      <Avatar className="w-10 h-10 border">
-                        <AvatarFallback className="bg-[#FF7B7B]/10 text-[#FF7B7B]">
-                          {comment.name[0].toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold">{comment.name}</span>
-                          <span className="text-sm text-muted-foreground">
-                            {formatDistanceToNow(new Date(comment.createdAt), { locale: es, addSuffix: true })}
-                          </span>
-                        </div>
-                        <p className="text-gray-700">{comment.content}</p>
-                      </div>
-                    </div>
-                  </motion.div>
+                  <CommentItem key={comment.id} comment={comment} index={index} />
                 ))}
 
                 {comments.length > visibleCount && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-center">
-                    <Button onClick={loadMoreComments} variant="outline" className="gap-2">
-                      <ChevronDown className="w-4 h-4" />
-                      Cargar más coment arios
-                    </Button>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        onClick={loadMoreComments}
+                        variant="outline"
+                        className="gap-2 group hover:bg-[#FF7B7B]/10 transition-all duration-300"
+                      >
+                        <ChevronDown className="w-4 h-4 group-hover:text-[#FF7B7B]" />
+                        <span className="group-hover:text-[#FF7B7B]">Cargar más comentarios</span>
+                      </Button>
+                    </motion.div>
                   </motion.div>
                 )}
 
                 {visibleCount > 5 && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-center mt-4">
-                    <Button onClick={hideComments} variant="outline" className="gap-2">
-                      <ChevronUp className="w-4 h-4" />
-                      Ocultar comentarios
-                    </Button>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        onClick={hideComments}
+                        variant="outline"
+                        className="gap-2 group hover:bg-[#FF7B7B]/10 transition-all duration-300"
+                      >
+                        <ChevronUp className="w-4 h-4 group-hover:text-[#FF7B7B]" />
+                        <span className="group-hover:text-[#FF7B7B]">Ocultar comentarios</span>
+                      </Button>
+                    </motion.div>
                   </motion.div>
                 )}
               </>
@@ -217,4 +304,6 @@ export function CommentSection() {
     </div>
   )
 }
+
+export default memo(CommentSection)
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -9,7 +9,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
-
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -35,19 +34,26 @@ export default function ListenerFeedback() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true)
-    // Here you would typically send the form data to your backend
-    console.log(values)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      toast({
-        title: "Feedback enviado",
-        description: "Gracias por compartir tus ideas con nosotros.",
-      })
-      form.reset()
-    }, 1000)
-  }
+  const onSubmit = useCallback(
+    (values: z.infer<typeof formSchema>) => {
+      setIsSubmitting(true)
+      // Here you would typically send the form data to your backend
+      console.log(values)
+
+      // Simular envío con un timeout
+      const timer = setTimeout(() => {
+        setIsSubmitting(false)
+        toast({
+          title: "Feedback enviado",
+          description: "Gracias por compartir tus ideas con nosotros.",
+        })
+        form.reset()
+      }, 1000)
+
+      return () => clearTimeout(timer)
+    },
+    [form],
+  )
 
   return (
     <Form {...form}>

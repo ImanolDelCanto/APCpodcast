@@ -12,7 +12,8 @@ import CafecitoSupport from "@/components/cafecito"
 import { motion, useAnimation } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { fetchYouTubeVideos, type Video } from "./actions/youtube"
-import { CommentSection } from "@/components/commet-section"
+import CommetSection from "@/components/commet-section"
+
 
 export default function Home() {
   const controls = useAnimation()
@@ -212,7 +213,7 @@ export default function Home() {
             Comparti tus ideas, sugerencias, preguntas para futuros episodios o simplemente saludá!
             </p>
           </motion.div>
-          <CommentSection />
+          <CommetSection />
         </div>
       </section>
     </div>
