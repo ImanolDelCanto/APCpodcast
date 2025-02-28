@@ -12,16 +12,19 @@ const QuienesSomos = () => {
   const mainControls = useAnimation()
   const floatControls = useAnimation()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
 
-  // Parallax scroll effect
+  // Parallax scroll effect - optimizado
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   })
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -100])
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -50])
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.5])
+  // Valores más sutiles para evitar movimientos extremos
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -50])
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -25])
+  // Mantener más opacidad al final para evitar desapariciones bruscas
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.7])
 
   useEffect(() => {
     if (isInView) {
@@ -30,16 +33,19 @@ const QuienesSomos = () => {
     }
   }, [isInView, mainControls, floatControls])
 
-  // Mouse parallax effect
+  // Mouse parallax effect - optimizado
   useEffect(() => {
+    // Solo activar en desktop para mejorar rendimiento en móviles
+    if (isMobile) return
+
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e
       const windowWidth = window.innerWidth
       const windowHeight = window.innerHeight
 
-      // Calculate mouse position as percentage of window
-      const x = clientX / windowWidth - 0.5
-      const y = clientY / windowHeight - 0.5
+      // Calcular posición con valores más sutiles
+      const x = (clientX / windowWidth - 0.5) * 0.7
+      const y = (clientY / windowHeight - 0.5) * 0.7
 
       setMousePosition({ x, y })
     }
@@ -49,15 +55,15 @@ const QuienesSomos = () => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
     }
-  }, [])
+  }, [isMobile])
 
   // Optimized float animation
   const floatAnimation: Variants = {
     initial: { y: 0 },
     float: {
-      y: [-5, 5],
+      y: [-3, 3], // Valores más sutiles
       transition: {
-        duration: 3,
+        duration: 4,
         repeat: Number.POSITIVE_INFINITY,
         repeatType: "reverse",
         ease: "easeInOut",
@@ -70,23 +76,25 @@ const QuienesSomos = () => {
       ref={containerRef}
       className="py-16 md:py-24 bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 overflow-hidden relative"
     >
-      {/* Animated background elements */}
+      {/* Animated background elements - optimizados */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-0 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl z-0"
+          className="absolute top-0 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl z-0"
           style={{
-            x: mousePosition.x * -30,
-            y: mousePosition.y * -30,
+            x: mousePosition.x * -15, // Valores más sutiles
+            y: mousePosition.y * -15,
             opacity,
           }}
+          transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-500/20 rounded-full blur-3xl z-0"
+          className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-96 md:h-96 bg-blue-500/20 rounded-full blur-3xl z-0"
           style={{
-            x: mousePosition.x * 30,
-            y: mousePosition.y * 30,
+            x: mousePosition.x * 15, // Valores más sutiles
+            y: mousePosition.y * 15,
             opacity,
           }}
+          transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
         />
       </div>
 
@@ -104,18 +112,29 @@ const QuienesSomos = () => {
             style={{ y: y1 }}
           >
             <motion.div
-              className="relative transform-gpu"
-              variants={floatAnimation}
+              className="relative transform-gpu" // Asegurar que usa GPU
+              variants={{
+                initial: { y: 0 },
+                float: {
+                  y: [-5, 5],
+                  transition: {
+                    duration: 5, // Más lento para ser más sutil
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                  },
+                },
+              }}
               initial="initial"
               animate={floatControls}
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.02 }} // Escala más sutil
+              transition={{ duration: 0.4 }}
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=75" // Reducir calidad y tamaño
                   alt="Host del Podcast"
-                  className="rounded-2xl shadow-2xl relative z-10 transform transition-transform duration-700"
+                  className="rounded-2xl shadow-2xl relative z-10 transform-gpu" // Añadir transform-gpu
                   height={800}
                   width={800}
                   loading="lazy"
@@ -131,21 +150,21 @@ const QuienesSomos = () => {
                       "linear-gradient(to top right, rgba(168, 85, 247, 0.3), transparent)",
                     ],
                   }}
-                  transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY }}
+                  transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY }} // Más lento
                 />
               </div>
 
-              {/* Floating decorative elements */}
+              {/* Floating decorative elements - optimizados */}
               <motion.div
                 className="absolute -top-6 -right-6 bg-purple-600 p-3 md:p-4 rounded-full shadow-lg z-30 transform-gpu"
                 animate={{
-                  y: [-3, 3],
-                  rotate: [0, 3, 0, -3, 0],
+                  y: [-2, 2], // Valores más sutiles
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 3,
                   repeat: Number.POSITIVE_INFINITY,
-                  ease: "linear",
+                  repeatType: "reverse",
+                  ease: "easeInOut",
                 }}
               >
                 <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -153,13 +172,13 @@ const QuienesSomos = () => {
               <motion.div
                 className="absolute -bottom-6 -left-6 bg-blue-600 p-3 md:p-4 rounded-full shadow-lg z-30 transform-gpu"
                 animate={{
-                  y: [3, -3],
-                  rotate: [0, -3, 0, 3, 0],
+                  y: [2, -2], // Valores más sutiles
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 3.5, // Ligeramente diferente para evitar sincronización
                   repeat: Number.POSITIVE_INFINITY,
-                  ease: "linear",
+                  repeatType: "reverse",
+                  ease: "easeInOut",
                 }}
               >
                 <Heart className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -183,12 +202,12 @@ const QuienesSomos = () => {
                 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 md:mb-8 text-white"
                 animate={{
                   textShadow: [
-                    "0 0 8px rgba(168, 85, 247, 0.5)",
-                    "0 0 16px rgba(168, 85, 247, 0.3)",
-                    "0 0 8px rgba(168, 85, 247, 0.5)",
+                    "0 0 4px rgba(168, 85, 247, 0.4)",
+                    "0 0 8px rgba(168, 85, 247, 0.3)",
+                    "0 0 4px rgba(168, 85, 247, 0.4)",
                   ],
                 }}
-                transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
               >
                 ¿Quiénes Somos?
               </motion.h2>
@@ -220,9 +239,10 @@ const QuienesSomos = () => {
                 >
                   <Link href="/sobre-nosotros">
                     <motion.button
-                      className="mt-6 md:mt-8 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-semibold text-base md:text-lg transform hover:shadow-xl flex items-center gap-2 w-full sm:w-auto justify-center group relative overflow-hidden"
-                      whileHover={{ scale: 1.03 }}
+                      className="mt-6 md:mt-8 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-semibold text-base md:text-lg flex items-center gap-2 w-full sm:w-auto justify-center group relative overflow-hidden"
+                      whileHover={{ scale: 1.02 }} // Escala más sutil
                       whileTap={{ scale: 0.98 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 17 }} // Transición tipo spring para más fluidez
                     >
                       <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></span>
                       <span className="relative z-10 flex items-center">
@@ -235,14 +255,14 @@ const QuienesSomos = () => {
                 </motion.div>
               </div>
 
-              {/* Background decoration */}
+              {/* Background decoration - optimizado */}
               <motion.div
                 className="absolute -bottom-20 -right-20 w-40 h-40 bg-purple-600/10 rounded-full blur-2xl"
                 animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 0.8, 0.5],
+                  scale: [1, 1.1, 1], // Valores más sutiles
+                  opacity: [0.5, 0.7, 0.5], // Valores más sutiles
                 }}
-                transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY }}
+                transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY }} // Más lento
               />
             </div>
           </motion.div>
