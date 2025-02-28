@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useRef, memo, useState } from "react"
-import { motion, useInView, useAnimation, type Variants, useScroll, useTransform } from "framer-motion"
+import { motion, useInView, useAnimation, useScroll, useTransform } from "framer-motion"
 import { Users, Heart, Sparkles, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -57,19 +57,7 @@ const QuienesSomos = () => {
     }
   }, [isMobile])
 
-  // Optimized float animation
-  const floatAnimation: Variants = {
-    initial: { y: 0 },
-    float: {
-      y: [-3, 3], // Valores más sutiles
-      transition: {
-        duration: 4,
-        repeat: Number.POSITIVE_INFINITY,
-        repeatType: "reverse",
-        ease: "easeInOut",
-      },
-    },
-  }
+
 
   return (
     <section
