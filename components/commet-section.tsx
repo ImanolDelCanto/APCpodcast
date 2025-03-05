@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { formatDistanceToNow } from "date-fns"
 import { es } from "date-fns/locale"
 import { toast } from "@/hooks/use-toast"
-import { MessageSquare, ChevronDown, ChevronUp, Send, Heart } from "lucide-react"
+import { MessageSquare, ChevronDown, ChevronUp, Send } from "lucide-react"
 
 interface Comment {
   id: string
@@ -22,18 +22,8 @@ interface Comment {
 }
 
 const CommentItem = memo(({ comment, index }: { comment: Comment; index: number }) => {
-  const [isLiked, setIsLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 10))
   const commentRef = useRef<HTMLDivElement>(null)
 
-  const toggleLike = () => {
-    if (isLiked) {
-      setLikeCount((prev) => prev - 1)
-    } else {
-      setLikeCount((prev) => prev + 1)
-    }
-    setIsLiked(!isLiked)
-  }
 
   return (
     <motion.div
