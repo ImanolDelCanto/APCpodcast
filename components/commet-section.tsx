@@ -21,7 +21,6 @@ interface Comment {
   parentId: string | null
 }
 
-// Componente de comentario individual memoizado
 const CommentItem = memo(({ comment, index }: { comment: Comment; index: number }) => {
   const [isLiked, setIsLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 10))
@@ -61,26 +60,6 @@ const CommentItem = memo(({ comment, index }: { comment: Comment; index: number 
             </span>
           </div>
           <p className="text-gray-700">{comment.content}</p>
-
-          <div className="flex items-center gap-2 mt-3">
-            <motion.button
-              onClick={toggleLike}
-              className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#FF7B7B] transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Heart className={`w-4 h-4 ${isLiked ? "fill-[#FF7B7B] text-[#FF7B7B]" : ""}`} />
-              <span>{likeCount}</span>
-            </motion.button>
-
-            <motion.button
-              className="text-sm text-gray-500 hover:text-[#FF7B7B] transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Responder
-            </motion.button>
-          </div>
         </div>
       </div>
     </motion.div>
