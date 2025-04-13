@@ -1,41 +1,34 @@
 "use client"
 
-import { memo } from "react"
 import { Button } from "@/components/ui/button"
 import { Coffee, ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
 
 const CafecitoSupport = () => {
   return (
-    <section className="relative overflow-hidden">
-      {/* Fondo animado */}
-      <div className="absolute inset-0 bg-[#FF7B7B]">
-        <motion.div
-          className="absolute inset-0 bg-noise opacity-10"
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 100%"],
-          }}
-          transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
-        />
+    <section className="relative py-20 overflow-hidden">
+      {/* Fondo con gradiente */}
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-indigo-600 z-0">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url('/noise.png')" }}></div>
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 relative z-10">
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           className="max-w-3xl mx-auto text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
         >
           <motion.div
             className="inline-block mb-6 bg-white p-4 rounded-full shadow-lg"
             animate={{
-              y: [0, -10, 0],
-              rotate: [0, 5, 0, -5, 0],
+              y: [0, -5, 0],
             }}
-            transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY }}
+            transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
           >
-            <Coffee className="w-8 h-8 text-[#FF7B7B]" />
+            <Coffee className="w-8 h-8 text-pink-500" />
           </motion.div>
 
           <motion.h2
@@ -43,7 +36,7 @@ const CafecitoSupport = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             Apóyanos con un Cafecito
           </motion.h2>
@@ -53,7 +46,7 @@ const CafecitoSupport = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             Si disfrutas de nuestro contenido y quieres apoyarnos de una manera más personal, puedes invitarnos a un
             cafecito. Cada aporte nos ayuda a seguir mejorando y creando contenido de calidad.
@@ -63,45 +56,25 @@ const CafecitoSupport = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                className="bg-white text-black hover:bg-gray-100 px-6 py-6 text-lg font-medium shadow-lg group"
-                aria-label="Invitarnos un cafecito"
-              >
-                <Coffee className="w-5 h-5 mr-3 text-[#FF7B7B]" />
-                <span>Invitarnos un cafecito</span>
-                <ArrowRight className="w-0 h-0 opacity-0 group-hover:w-5 group-hover:h-5 group-hover:opacity-100 group-hover:ml-2 transition-all duration-300" />
-              </Button>
-            </motion.div>
+            <Button
+              className="bg-white text-slate-900 hover:bg-gray-100 px-6 py-6 text-lg font-medium shadow-lg group"
+              aria-label="Invitarnos un cafecito"
+            >
+              <Coffee className="w-5 h-5 mr-3 text-pink-500" />
+              <span>Invitarnos un cafecito</span>
+              <ArrowRight className="w-0 h-0 opacity-0 group-hover:w-5 group-hover:h-5 group-hover:opacity-100 group-hover:ml-2 transition-all duration-200" />
+            </Button>
           </motion.div>
 
           {/* Decorative coffee beans */}
           <div className="absolute left-10 top-1/4 opacity-20">
-            <motion.div
-              animate={{
-                y: [0, -20, 0],
-                rotate: [0, 360],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY }}
-            >
-              <Coffee className="w-12 h-12 text-white" />
-            </motion.div>
+            <Coffee className="w-12 h-12 text-white" />
           </div>
 
           <div className="absolute right-10 bottom-1/4 opacity-20">
-            <motion.div
-              animate={{
-                y: [0, 20, 0],
-                rotate: [0, -360],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY }}
-            >
-              <Coffee className="w-16 h-16 text-white" />
-            </motion.div>
+            <Coffee className="w-16 h-16 text-white" />
           </div>
         </motion.div>
       </div>
@@ -109,5 +82,4 @@ const CafecitoSupport = () => {
   )
 }
 
-export default memo(CafecitoSupport)
-
+export default CafecitoSupport

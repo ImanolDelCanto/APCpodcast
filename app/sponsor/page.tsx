@@ -1,11 +1,11 @@
-'use client'
+"use client"
 
-import { useState, ChangeEvent, FormEvent } from "react"
+import { useState, type ChangeEvent, type FormEvent } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/hooks/use-toast"
 import Link from "next/link"
-import { Briefcase } from "lucide-react"
+import { Briefcase, CheckCircle } from "lucide-react"
 import Image from "next/image"
 
 // Definimos el tipo para el estado del formulario
@@ -101,20 +101,44 @@ export default function SponsorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 text-white overflow-x-hidden relative pt-20">
-      {/* Fondo decorativo */}
+    <div className="min-h-screen bg-white overflow-x-hidden relative pt-20">
+      {/* Fondo decorativo moderno */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl z-0" />
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-500/20 rounded-full blur-3xl z-0" />
+        <div className="absolute top-0 right-0 w-full h-[70vh] bg-gradient-to-b from-indigo-50 to-white z-0" />
+        <div className="absolute top-0 left-0 w-1/2 h-[50vh] bg-[url('/grid.svg')] bg-center opacity-5 z-0" />
+        <motion.div
+          className="absolute top-20 right-20 w-64 h-64 rounded-full bg-indigo-100 z-0"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.2, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-40 left-20 w-96 h-96 rounded-full bg-pink-50 z-0"
+          animate={{
+            scale: [1.1, 1, 1.1],
+            opacity: [0.2, 0.3, 0.2],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
       </div>
 
       <div className="container mx-auto px-4 py-12 md:py-24 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-6xl font-bold mb-12 md:mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-blue-300"
+          className="text-4xl md:text-6xl font-bold mb-12 md:mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-pink-500"
         >
-          Conviértete en Sponsor
+          Convertite en Sponsor
         </motion.div>
 
         <motion.div
@@ -125,7 +149,7 @@ export default function SponsorPage() {
         >
           {/* Imagen o contenido sobre la oportunidad de patrocinio */}
           <motion.div variants={fadeInUp} className="relative order-2 md:order-1">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative rounded-3xl overflow-hidden shadow-xl">
               <Image
                 src="/placeholder.svg?height=600&width=600"
                 alt="Patrocinio"
@@ -133,18 +157,32 @@ export default function SponsorPage() {
                 height={600}
                 width={600}
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+              <motion.div
+                className="absolute bottom-6 left-6 right-6 text-white"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
+                  <span className="text-sm font-medium">Oportunidad de crecimiento</span>
+                </div>
+                <p className="text-sm opacity-90">Alcanza a una audiencia comprometida</p>
+              </motion.div>
             </div>
           </motion.div>
 
           {/* Información sobre los beneficios del patrocinio */}
           <motion.div variants={fadeInUp} className="space-y-6 order-1 md:order-2">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-purple-300">¿Por qué patrocinar?</h2>
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-indigo-600">¿Por qué patrocinar?</h2>
+            <p className="text-lg md:text-xl text-slate-700 leading-relaxed">
               Al convertirte en sponsor de Algo Para Contar, tendrás la oportunidad de llegar a una audiencia
               comprometida y en crecimiento. Nuestros oyentes son personas curiosas, interesadas en historias
               inspiradoras y nuevas ideas.
             </p>
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-700 leading-relaxed">
               Ofrecemos diferentes opciones de patrocinio para adaptarnos a tus necesidades y objetivos de marketing.
               Desde menciones en episodios hasta contenido personalizado, trabajaremos contigo para crear una
               experiencia única para nuestra audiencia.
@@ -152,7 +190,7 @@ export default function SponsorPage() {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <Link href="#contact-form">
-                <Button className="bg-[#FF7B7B] hover:bg-[#ff6262] gap-2">
+                <Button className="bg-gradient-to-r from-indigo-600 to-pink-500 hover:from-indigo-700 hover:to-pink-600 gap-2">
                   <Briefcase className="w-4 h-4" />
                   Contactar para patrocinar
                 </Button>
@@ -161,6 +199,85 @@ export default function SponsorPage() {
           </motion.div>
         </motion.div>
 
+        {/* Planes de patrocinio */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="mb-16 md:mb-24"
+        >
+          <motion.div variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-600">
+            Planes de Patrocinio
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Básico",
+                features: ["Mención en 1 episodio", "Logo en nuestra web", "Agradecimiento en redes sociales"],
+                color: "from-indigo-500 to-indigo-600",
+              },
+              {
+                title: "Premium",
+                features: [
+                  "Mención en 3 episodios",
+                  "Logo destacado en nuestra web",
+                  "Publicaciones en redes sociales",
+                  "Segmento de 30 segundos",
+                ],
+                color: "from-pink-500 to-indigo-600",
+                featured: true,
+              },
+              {
+                title: "Exclusivo",
+                features: [
+                  "Mención en 5 episodios",
+                  "Logo destacado en nuestra web",
+                  "Campaña en redes sociales",
+                  "Segmento de 60 segundos",
+                  "Episodio temático personalizado",
+                ],
+                color: "from-pink-500 to-pink-600",
+              },
+            ].map((plan, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className={`rounded-3xl overflow-hidden ${plan.featured ? "transform md:-translate-y-4" : ""}`}
+              >
+                <div className={`h-2 bg-gradient-to-r ${plan.color}`}></div>
+                <div
+                  className={`p-8 border border-t-0 border-slate-200 rounded-b-3xl ${
+                    plan.featured ? "bg-white shadow-xl" : "bg-white"
+                  }`}
+                >
+                  <h3 className="text-2xl font-bold mb-6 text-slate-800">{plan.title}</h3>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-2 text-slate-700">
+                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link href="#contact-form">
+                    <Button
+                      className={`w-full ${
+                        plan.featured
+                          ? "bg-gradient-to-r from-pink-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700"
+                          : "bg-white border border-slate-300 text-slate-800 hover:bg-slate-50"
+                      }`}
+                    >
+                      Seleccionar plan
+                    </Button>
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Formulario de contacto */}
         <motion.div
@@ -170,14 +287,14 @@ export default function SponsorPage() {
           className="relative"
           id="contact-form"
         >
-          <motion.div variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-8 text-center text-purple-300">
+          <motion.div variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-600">
             Contáctanos para Patrocinar
           </motion.div>
 
-          <div className="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-lg p-8">
+          <div className="max-w-2xl mx-auto bg-white rounded-3xl p-8 shadow-lg border border-slate-100">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
                   Nombre
                 </label>
                 <input
@@ -186,12 +303,12 @@ export default function SponsorPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
                   Email
                 </label>
                 <input
@@ -200,12 +317,12 @@ export default function SponsorPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-200 mb-1">
+                <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-1">
                   Empresa
                 </label>
                 <input
@@ -214,12 +331,12 @@ export default function SponsorPage() {
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-200 mb-1">
+                <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">
                   Mensaje
                 </label>
                 <textarea
@@ -228,12 +345,16 @@ export default function SponsorPage() {
                   value={formData.message}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-3 py-2 bg-white/5 border border-gray-600 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                   required
                 ></textarea>
               </div>
               <div>
-                <Button type="submit" className="w-full bg-[#FF7B7B] hover:bg-[#ff6262]" disabled={isSubmitting}>
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:from-indigo-700 hover:to-pink-600"
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? "Enviando..." : "Enviar mensaje"}
                 </Button>
               </div>

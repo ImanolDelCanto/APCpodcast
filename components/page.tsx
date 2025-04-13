@@ -40,7 +40,6 @@ export default function SerInvitado() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
-    // Here you would typically send the form data to your backend
     console.log(values)
     setTimeout(() => {
       setIsSubmitting(false)

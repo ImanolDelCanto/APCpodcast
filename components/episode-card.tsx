@@ -1,7 +1,7 @@
 "use client"
 import { useState, useCallback, memo, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Play, Pause, Share2, Heart, Clock, Calendar, ExternalLink } from "lucide-react"
+import { Play, Pause, Share2, Clock, Calendar, ExternalLink } from "lucide-react"
 import type { Video } from "@/app/actions/youtube"
 import Image from "next/image"
 
@@ -11,7 +11,6 @@ interface EpisodeCardProps {
 
 const EpisodeCard = ({ episode }: EpisodeCardProps) => {
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isLiked, setIsLiked] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -66,9 +65,7 @@ const EpisodeCard = ({ episode }: EpisodeCardProps) => {
     setIsPlaying((prev) => !prev)
   }, [])
 
-  const toggleLike = useCallback(() => {
-    setIsLiked((prev) => !prev)
-  }, [])
+
 
   // Formatear la duración del episodio
   const formattedDuration = new Date(episode.duration * 1000).toDateString().substr(14, 5)
@@ -219,23 +216,6 @@ const EpisodeCard = ({ episode }: EpisodeCardProps) => {
               whileTap={{ scale: 0.9 }}
             >
               <Share2 className="w-5 h-5 text-gray-600" />
-            </motion.button>
-
-            <motion.button
-              onClick={toggleLike}
-              className={`p-2 hover:bg-gray-100 rounded-full transition-colors duration-300 ${
-                isLiked ? "text-[#FF7B7B]" : "text-gray-600"
-              }`}
-              aria-label={isLiked ? "Quitar me gusta" : "Me gusta"}
-              whileHover={{ scale: 1.1, backgroundColor: "#f3f4f6" }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Heart
-                className={`w-5 h-5 ${isLiked ? "fill-current" : ""}`}
-                style={{
-                  filter: isLiked ? "drop-shadow(0 0 2px rgba(255, 123, 123, 0.5))" : "none",
-                }}
-              />
             </motion.button>
           </div>
         </div>

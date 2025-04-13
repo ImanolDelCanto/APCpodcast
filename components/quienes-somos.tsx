@@ -1,257 +1,177 @@
 "use client"
-import { useEffect, useRef, memo, useState } from "react"
-import { motion, useInView, useAnimation, useScroll, useTransform } from "framer-motion"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
 import { Users, Heart, Sparkles, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
 const QuienesSomos = () => {
   const ref = useRef(null)
-  const containerRef = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
-  const mainControls = useAnimation()
-  const floatControls = useAnimation()
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
-
-  // Parallax scroll effect - optimizado
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  })
-
-  // Valores más sutiles para evitar movimientos extremos
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -50])
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -25])
-  // Mantener más opacidad al final para evitar desapariciones bruscas
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.7])
-
-  useEffect(() => {
-    if (isInView) {
-      mainControls.start("visible")
-      floatControls.start("float")
-    }
-  }, [isInView, mainControls, floatControls])
-
-  // Mouse parallax effect - optimizado
-  useEffect(() => {
-    // Solo activar en desktop para mejorar rendimiento en móviles
-    if (isMobile) return
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e
-      const windowWidth = window.innerWidth
-      const windowHeight = window.innerHeight
-
-      // Calcular posición con valores más sutiles
-      const x = (clientX / windowWidth - 0.5) * 0.7
-      const y = (clientY / windowHeight - 0.5) * 0.7
-
-      setMousePosition({ x, y })
-    }
-
-    window.addEventListener("mousemove", handleMouseMove)
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-    }
-  }, [isMobile])
-
-
+  const isInView = useInView(ref, { once: true, amount: 0.2 })
 
   return (
-    <section
-      ref={containerRef}
-      className="py-16 md:py-24 bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 overflow-hidden relative"
-    >
-      {/* Animated background elements - optimizados */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-0 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl z-0"
-          style={{
-            x: mousePosition.x * -15, // Valores más sutiles
-            y: mousePosition.y * -15,
-            opacity,
-          }}
-          transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-96 md:h-96 bg-blue-500/20 rounded-full blur-3xl z-0"
-          style={{
-            x: mousePosition.x * 15, // Valores más sutiles
-            y: mousePosition.y * 15,
-            opacity,
-          }}
-          transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
-        />
+    <section ref={ref} className="py-24 relative overflow-hidden">
+      {/* Fondo con gradiente suave */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-slate-100 z-0">
+        <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "url('/noise.png')" }}></div>
       </div>
 
-      <div className="container mx-auto px-4">
-        <div ref={ref} className="flex flex-col md:flex-row items-center gap-8 md:gap-16 relative">
+      {/* Elementos decorativos */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
+
+      <motion.div
+        className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-pink-500/10 blur-3xl"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1 }}
+      />
+      <motion.div
+        className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-indigo-500/10 blur-3xl"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1 }}
+      />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="flex flex-col items-center mb-16">
           <motion.div
-            className="w-full md:w-1/2 relative mb-8 md:mb-0"
-            variants={{
-              hidden: { opacity: 0, x: -50 },
-              visible: { opacity: 1, x: 0 },
-            }}
-            initial="hidden"
-            animate={mainControls}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            style={{ y: y1 }}
+            className="w-20 h-20 rounded-full bg-gradient-to-br from-pink-500 to-indigo-600 flex items-center justify-center mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
-            <motion.div
-              className="relative transform-gpu" // Asegurar que usa GPU
-              variants={{
-                initial: { y: 0 },
-                float: {
-                  y: [-5, 5],
-                  transition: {
-                    duration: 5, // Más lento para ser más sutil
-                    repeat: Number.POSITIVE_INFINITY,
-                    repeatType: "reverse",
-                    ease: "easeInOut",
-                  },
-                },
-              }}
-              initial="initial"
-              animate={floatControls}
-              whileHover={{ scale: 1.02 }} // Escala más sutil
-              transition={{ duration: 0.4 }}
-            >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <Users className="w-10 h-10 text-white" />
+          </motion.div>
+
+          <motion.h2
+            className="text-4xl md:text-5xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-indigo-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            ¿Quiénes Somos?
+          </motion.h2>
+
+          <motion.div
+            className="w-24 h-1 bg-gradient-to-r from-pink-500 to-indigo-600 rounded-full"
+            initial={{ opacity: 0, width: 0 }}
+            animate={isInView ? { opacity: 1, width: 96 } : { opacity: 0, width: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            className="order-2 lg:order-1"
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div className="space-y-6">
+              <motion.p
+                className="text-lg text-slate-700 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                Somos un equipo apasionado por contar historias que inspiran, educan y entretienen. Nuestro podcast,
+                <span className="font-semibold text-pink-600"> Algo Para Contar</span>, nació de la idea de que cada
+                persona tiene una historia única que merece ser compartida.
+              </motion.p>
+
+              <motion.p
+                className="text-lg text-slate-700 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                Desde entrevistas con emprendedores locales hasta conversaciones con artistas internacionales, nuestro
+                objetivo es traerte historias diversas y fascinantes que te hagan reflexionar, reír y sentir.
+              </motion.p>
+
+              <motion.div
+                className="pt-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                <div className="flex flex-wrap gap-4 mb-8">
+                  <div className="flex items-center gap-2 bg-pink-50 text-pink-600 px-4 py-2 rounded-full">
+                    <Heart className="w-4 h-4" />
+                    <span>Historias Inspiradoras</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-indigo-50 text-indigo-600 px-4 py-2 rounded-full">
+                    <Sparkles className="w-4 h-4" />
+                    <span>Conversaciones Auténticas</span>
+                  </div>
+                </div>
+
+                <Link href="/sobre-nosotros">
+                  <motion.button
+                    className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white px-6 py-3 rounded-full font-medium flex items-center gap-2 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all duration-300 group"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span>Conoce más sobre nosotros</span>
+                    <ArrowRight className="w-0 h-0 opacity-0 group-hover:w-5 group-hover:h-5 group-hover:opacity-100 group-hover:ml-1 transition-all duration-300" />
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="order-1 lg:order-2"
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div className="relative">
+              <motion.div
+                className="absolute -top-6 -left-6 w-full h-full rounded-2xl bg-gradient-to-br from-pink-500 to-indigo-600 transform rotate-3"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={isInView ? { opacity: 0.7, scale: 1 } : { opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              />
+
+              <motion.div
+                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <Image
-                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=75" // Reducir calidad y tamaño
+                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
                   alt="Host del Podcast"
-                  className="rounded-2xl shadow-2xl relative z-10 transform-gpu" // Añadir transform-gpu
+                  className="rounded-2xl"
                   height={800}
                   width={800}
                   loading="lazy"
                   placeholder="blur"
-                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNTAzQjg3Ii8+PC9zdmc+"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWNlY2ZmIi8+PC9zdmc+"
                 />
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-tr from-purple-500/30 to-transparent rounded-2xl z-20"
-                  animate={{
-                    background: [
-                      "linear-gradient(to top right, rgba(168, 85, 247, 0.3), transparent)",
-                      "linear-gradient(to top right, rgba(79, 70, 229, 0.3), transparent)",
-                      "linear-gradient(to top right, rgba(168, 85, 247, 0.3), transparent)",
-                    ],
-                  }}
-                  transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY }} // Más lento
-                />
-              </div>
 
-              {/* Floating decorative elements - optimizados */}
-              <motion.div
-                className="absolute -top-6 -right-6 bg-purple-600 p-3 md:p-4 rounded-full shadow-lg z-30 transform-gpu"
-                animate={{
-                  y: [-2, 2], // Valores más sutiles
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                }}
-              >
-                <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent">
+                  <div className="absolute bottom-6 left-6 right-6 text-white">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                      <span className="text-sm font-medium">Grabando episodios semanalmente</span>
+                    </div>
+                    <p className="text-sm opacity-80">Más de 100 episodios y contando</p>
+                  </div>
+                </div>
               </motion.div>
+
               <motion.div
-                className="absolute -bottom-6 -left-6 bg-blue-600 p-3 md:p-4 rounded-full shadow-lg z-30 transform-gpu"
-                animate={{
-                  y: [2, -2], // Valores más sutiles
-                }}
-                transition={{
-                  duration: 3.5, // Ligeramente diferente para evitar sincronización
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                }}
+                className="absolute -bottom-6 -right-6 bg-white p-4 rounded-full shadow-xl z-10"
+                initial={{ opacity: 0, scale: 0.8, rotate: 15 }}
+                animate={isInView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.8, rotate: 15 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
               >
-                <Heart className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                <Image src="/bgUp.png" alt="Logo" width={60} height={60} className="rounded-full" />
               </motion.div>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="w-full md:w-1/2"
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            initial="hidden"
-            animate={mainControls}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-            style={{ y: y2 }}
-          >
-            <div className="relative">
-              <motion.h2
-                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 md:mb-8 text-white"
-                animate={{
-                  textShadow: [
-                    "0 0 4px rgba(168, 85, 247, 0.4)",
-                    "0 0 8px rgba(168, 85, 247, 0.3)",
-                    "0 0 4px rgba(168, 85, 247, 0.4)",
-                  ],
-                }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
-              >
-                ¿Quiénes Somos?
-              </motion.h2>
-              <div className="space-y-4 md:space-y-6 relative">
-                <motion.p
-                  className="text-lg md:text-xl text-purple-100 leading-relaxed"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.6 }}
-                >
-                  Somos un equipo apasionado por contar historias que inspiran, educan y entretienen. Nuestro podcast,
-                  <span className="font-semibold text-white"> Algo Para Contar</span>, nació de la idea de que cada
-                  persona tiene una historia única que merece ser compartida.
-                </motion.p>
-                <motion.p
-                  className="text-lg md:text-xl text-purple-100 leading-relaxed"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.6 }}
-                >
-                  Desde entrevistas con emprendedores locales hasta conversaciones con artistas internacionales, nuestro
-                  objetivo es traerte historias diversas y fascinantes que te hagan reflexionar, reír y sentir.
-                </motion.p>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 0.6 }}
-                >
-                  <Link href="/sobre-nosotros">
-                    <motion.button
-                      className="mt-6 md:mt-8 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-semibold text-base md:text-lg flex items-center gap-2 w-full sm:w-auto justify-center group relative overflow-hidden"
-                      whileHover={{ scale: 1.02 }} // Escala más sutil
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }} // Transición tipo spring para más fluidez
-                    >
-                      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></span>
-                      <span className="relative z-10 flex items-center">
-                        <Users className="w-5 h-5 mr-2" />
-                        <span>Conoce más sobre nosotros</span>
-                        <ArrowRight className="w-0 h-0 opacity-0 group-hover:w-5 group-hover:h-5 group-hover:opacity-100 group-hover:ml-2 transition-all duration-300" />
-                      </span>
-                    </motion.button>
-                  </Link>
-                </motion.div>
-              </div>
-
-              {/* Background decoration - optimizado */}
-              <motion.div
-                className="absolute -bottom-20 -right-20 w-40 h-40 bg-purple-600/10 rounded-full blur-2xl"
-                animate={{
-                  scale: [1, 1.1, 1], // Valores más sutiles
-                  opacity: [0.5, 0.7, 0.5], // Valores más sutiles
-                }}
-                transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY }} // Más lento
-              />
             </div>
           </motion.div>
         </div>
@@ -260,5 +180,4 @@ const QuienesSomos = () => {
   )
 }
 
-export default memo(QuienesSomos)
-
+export default QuienesSomos

@@ -8,16 +8,16 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 
+// Optimized throttle function
 function throttle<T extends unknown[]>(callback: (...args: T) => void, delay: number) {
-  let lastCall = 0;
+  let lastCall = 0
   return (...args: T) => {
-    const now = new Date().getTime();
-    if (now - lastCall < delay) return;
-    lastCall = now;
-    callback(...args);
-  };
+    const now = Date.now()
+    if (now - lastCall < delay) return
+    lastCall = now
+    callback(...args)
+  }
 }
-
 
 const NavItem = memo(
   ({
@@ -36,20 +36,18 @@ const NavItem = memo(
     onClick?: () => void
   }) => {
     return (
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-        <Link
-          href={href}
-          className={`${
-            isHomePage && !isScrolled ? "text-white" : isActive ? "text-[#FF7B7B]" : "text-gray-600"
-          } hover:text-[#FF7B7B] transition-colors relative group`}
-          onClick={onClick}
-        >
-          {label}
-          <span
-            className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF7B7B] transition-all duration-300 group-hover:w-full ${isActive ? "w-full" : ""}`}
-          ></span>
-        </Link>
-      </motion.div>
+      <Link
+        href={href}
+        className={`${
+          isHomePage && !isScrolled ? "text-white" : isActive ? "text-[#FF7B7B]" : "text-gray-600"
+        } hover:text-[#FF7B7B] transition-colors relative group`}
+        onClick={onClick}
+      >
+        {label}
+        <span
+          className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF7B7B] transition-all duration-200 group-hover:w-full ${isActive ? "w-full" : ""}`}
+        ></span>
+      </Link>
     )
   },
 )
@@ -64,17 +62,17 @@ const Navbar = () => {
   const isHomePage = pathname === "/"
   const navRef = useRef<HTMLDivElement>(null)
 
-  // Optimizar el evento de scroll con throttling
+  // Optimized scroll handler with throttling
   useEffect(() => {
     const handleScroll = throttle(() => {
       setIsScrolled(window.scrollY > 20)
 
-      // Calcular el progreso del scroll para el indicador
+      // Calculate scroll progress for the indicator
       const scrollTop = window.scrollY
       const docHeight = document.body.offsetHeight - window.innerHeight
       const scrollPercent = scrollTop / docHeight
       setScrollProgress(scrollPercent)
-    }, 50) // Throttle a 50ms
+    }, 100) // Throttle to 100ms for better performance
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
@@ -84,61 +82,50 @@ const Navbar = () => {
     setIsMenuOpen((prev) => !prev)
   }, [])
 
-  // Cerrar menú al cambiar de ruta
+  // Close menu on route change
   useEffect(() => {
     setIsMenuOpen(false)
-  }, []) // Removed unnecessary pathname dependency
+  }, [pathname])
 
   const navbarClass = isHomePage
-    ? `fixed w-full z-50 transition-all duration-500 ${
+    ? `fixed w-full z-50 transition-all duration-300 ${
         isScrolled ? "bg-white/95 backdrop-blur-sm shadow-md py-2" : "bg-transparent py-4"
       }`
     : "fixed w-full z-50 bg-white shadow-md py-2"
 
-
   const navItems = [
     { href: "/", label: "Inicio" },
-    { href: "/episodios", label: "Episodios" },
     { href: "/sobre-nosotros", label: "Sobre Nosotros" },
     { href: "/sponsor", label: "Sponsor" },
   ]
 
   return (
     <>
-      {/* Indicador de scroll */}
-      <div className="scroll-indicator" style={{ width: `${scrollProgress * 100}%` }}></div>
+      {/* Scroll indicator */}
+      <div
+        className="fixed top-0 left-0 h-1 bg-[#FF7B7B] z-[60] transition-all duration-100"
+        style={{ width: `${scrollProgress * 100}%` }}
+      />
 
       <motion.nav
         ref={navRef}
         className={navbarClass}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/" className="font-bold text-xl flex items-center">
-                <motion.div
-                  className="relative w-8 h-8 mr-2"
-                  animate={{ rotate: [0, 5, 0, -5, 0] }}
-                  transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-                >
-                  <Image
-                    src="/bgUp.png"
-                    alt="Algo Para Contar Logo"
-                    fill
-                    className="object-contain"
-                    priority // Cargar con prioridad por ser visible inmediatamente
-                  />
-                </motion.div>
-                <span
-                  className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} transition-colors duration-300`}
-                >
-                  Algo Para Contar
-                </span>
-              </Link>
-            </motion.div>
+            <Link href="/" className="font-bold text-xl flex items-center">
+              <div className="relative w-8 h-8 mr-2">
+                <Image src="/bgUp.png" alt="Algo Para Contar Logo" fill className="object-contain" priority />
+              </div>
+              <span
+                className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} transition-colors duration-200`}
+              >
+                Algo Para Contar
+              </span>
+            </Link>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
@@ -153,22 +140,19 @@ const Navbar = () => {
                 />
               ))}
 
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/ser-invitado" passHref>
-                  <Button className="bg-[#FF7B7B] hover:bg-[#ff6262] transition-all duration-300 shadow-lg hover:shadow-xl">
-                    Ser Invitado
-                  </Button>
-                </Link>
-              </motion.div>
+              <Link href="/ser-invitado" passHref>
+                <Button className="bg-[#FF7B7B] hover:bg-[#ff6262] transition-all duration-200 shadow hover:shadow-md">
+                  Ser Invitado
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
-            <motion.button
+            <button
               className="md:hidden"
               onClick={toggleMenu}
               aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
               aria-expanded={isMenuOpen}
-              whileTap={{ scale: 0.9 }}
             >
               <AnimatePresence mode="wait">
                 {isMenuOpen ? (
@@ -193,7 +177,7 @@ const Navbar = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.button>
+            </button>
           </div>
 
           {/* Mobile Menu */}
@@ -212,7 +196,7 @@ const Navbar = () => {
                       key={item.href}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                     >
                       <NavItem
                         href={item.href}
@@ -227,7 +211,7 @@ const Navbar = () => {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: navItems.length * 0.1 }}
+                    transition={{ delay: navItems.length * 0.05 }}
                   >
                     <Link href="/ser-invitado" passHref onClick={toggleMenu}>
                       <Button className="bg-[#FF7B7B] hover:bg-[#ff6262] w-full">Ser Invitado</Button>
@@ -244,4 +228,3 @@ const Navbar = () => {
 }
 
 export default memo(Navbar)
-
