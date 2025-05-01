@@ -105,7 +105,6 @@ export default function SponsorPage() {
       {/* Fondo decorativo moderno */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-full h-[70vh] bg-gradient-to-b from-indigo-50 to-white z-0" />
-        <div className="absolute top-0 left-0 w-1/2 h-[50vh] bg-[url('/grid.svg')] bg-center opacity-5 z-0" />
         <motion.div
           className="absolute top-20 right-20 w-64 h-64 rounded-full bg-indigo-100 z-0"
           animate={{
@@ -136,9 +135,9 @@ export default function SponsorPage() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-6xl font-bold mb-12 md:mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-pink-500"
+          className="text-4xl md:text-6xl font-SuperDream mb-12 md:mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-pink-500"
         >
-          Convertite en Sponsor
+          Convertite en nuestro Sponsor
         </motion.div>
 
         <motion.div

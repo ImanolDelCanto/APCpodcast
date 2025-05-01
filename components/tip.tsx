@@ -3,13 +3,13 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Lightbulb, Headphones, BookOpen } from "lucide-react"
+import listen from "@/animations/listen.json" 
+import Lottie from "lottie-react"
 
 // Array de tips que rotarán según la fecha
 const tips = [
   {
     id: 1,
-    icon: <Headphones className="w-8 h-8" />,
     title: "Mejora tu vocabulario con podcasts",
     shortDescription: "¿Sabías que escuchar podcasts puede mejorar tu vocabulario y habilidades de comunicación?",
     longDescription:
@@ -23,7 +23,6 @@ const tips = [
   },
   {
     id: 2,
-    icon: <Lightbulb className="w-8 h-8" />,
     title: "Podcasts para la creatividad",
     shortDescription: "Los podcasts pueden ser una excelente fuente de inspiración para potenciar tu creatividad.",
     longDescription:
@@ -37,7 +36,6 @@ const tips = [
   },
   {
     id: 3,
-    icon: <BookOpen className="w-8 h-8" />,
     title: "Aprendizaje continuo con podcasts",
     shortDescription: "Los podcasts son una herramienta poderosa para el aprendizaje informal y continuo.",
     longDescription:
@@ -78,7 +76,7 @@ export default function TipDelDia() {
     <div className="bg-white p-8 rounded-xl shadow-xl border border-slate-100 overflow-hidden">
       <div className="flex flex-col md:flex-row items-start gap-6">
         <motion.div
-          className="bg-gradient-to-br from-pink-500 to-indigo-600 p-4 rounded-full text-white shadow-lg"
+          className="bg-gradient-to-br from-pink-500 to-indigo-600 rounded-full text-white shadow-lg"
           whileHover={{ scale: 1.05 }}
           transition={{
             type: "spring",
@@ -86,9 +84,8 @@ export default function TipDelDia() {
             damping: 15,
           }}
         >
-          {currentTip.icon}
-        </motion.div>
-
+          <Lottie animationData={listen} loop={true} className="w-20 h-20"/>
+          </motion.div>
         <div className="flex-1">
           <h3 className="text-2xl font-bold mb-3 text-slate-900">{currentTip.title}</h3>
           <p className="text-lg mb-4 text-slate-700">{currentTip.shortDescription}</p>

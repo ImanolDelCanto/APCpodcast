@@ -6,12 +6,14 @@ import { Play, Mic } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import EpisodeCard from "@/components/episode-card"
 import Link from "next/link"
-import QuienesSomos from "@/components/quienes-somos"
+import QuienesSomos from "@/components/about-us"
 import CafecitoSupport from "@/components/cafecito"
 import { motion, useAnimation, useInView } from "framer-motion"
 import { fetchYouTubeVideos, type Video } from "./actions/youtube"
 import CommetSection from "@/components/commet-section"
 import TipDelDia from "@/components/tip"
+import Lottie from 'lottie-react';
+import people from "@/animations/people.json"
 
 export default function Home() {
   const controls = useAnimation()
@@ -40,7 +42,6 @@ export default function Home() {
         {/* Fondo con gradiente mejorado y efecto de partículas */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-900 to-pink-800 z-0">
           <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url('/noise.png')" }}></div>
-          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
         </div>
 
         {/* Círculos decorativos con animaciones suaves */}
@@ -73,119 +74,101 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="container mx-auto px-4 py-12 relative z-10 text-white text-center"
+          className="container mx-auto px-4 py-12 relative z-10 text-white"
         >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="flex flex-col items-center"
-          >
-            <Image
-              src="/bgUp.png"
-              alt="Algo Para Contar Podcast"
-              width={300}
-              height={300}
-              className="mx-auto mb-8 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
-              style={{
-                filter: "drop-shadow(0 0 20px rgba(255, 123, 123, 0.5))",
-              }}
-            />
-
-            <motion.h1
-              className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-200 to-pink-300 h-20"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.3,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              Algo Para Contar
-            </motion.h1>
-
-            <motion.p
-              className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.5,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              Un podcast donde las historias cobran vida y las conversaciones te hacen pensar, reír y sentir.
-            </motion.p>
-
+          <div className="flex flex-col md:flex-row items-center justify-between w-full">
+            {/* Logo side - ahora ocupa exactamente la mitad y está centrado */}
             <motion.div
-              className="flex flex-col sm:flex-row justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="w-full md:w-1/2 flex justify-center items-center"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{
-                duration: 0.8,
-                delay: 0.7,
+                duration: 1,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <Link href="https://www.youtube.com/channel/UCiz7KCGQNHCEjtoUpuMfF9g/videos" target="_blank">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 border-0 gap-2 w-full sm:w-auto transform transition-all duration-300 shadow-lg shadow-pink-500/25"
-                >
-                  <Play className="w-5 h-5" />
-                  Escuchar último episodio
-                </Button>
-              </Link>
-              <Link href="/ser-invitado" passHref>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="gap-2 border-white/30 text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 w-full sm:w-auto transform transition-all duration-300"
-                >
-                  <Mic className="w-5 h-5" />
-                  Ser invitado
-                </Button>
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: [0, 1, 0],
-              y: [0, 10, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          >
-            <div className="w-8 h-12 rounded-full border-2 border-white/30 flex justify-center pt-2">
-              <motion.div
-                className="w-1 h-2 bg-white rounded-full"
-                animate={{
-                  y: [0, 6, 0],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
+              <Image
+                src="/bgUp.png"
+                alt="Algo Para Contar Podcast"
+                width={300}
+                height={300}
+                className="w-48 h-48 md:w-64 md:h-64 object-contain"
+                style={{
+                  filter: "drop-shadow(0 0 20px rgba(255, 123, 123, 0.5))",
                 }}
               />
-            </div>
-          </motion.div>
+            </motion.div>
+
+            {/* Text side - ahora ocupa exactamente la mitad */}
+            <motion.div
+              className="w-full md:w-1/2 text-center md:text-left mt-8 md:mt-0"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 1,
+                delay: 0.2,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <motion.h2
+                className="text-3xl md:text-4xl lg:text-5xl mb-4 font-SuperDream"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.3,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                Sé nuestro próximo invitado
+              </motion.h2>
+              <motion.p
+                className="text-lg text-gray-200 mb-6 max-w-xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.5,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                Un podcast donde las historias cobran vida y las conversaciones te hacen pensar, reír y sentir.
+              </motion.p>
+
+              <motion.div
+                className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <Link href="https://www.youtube.com/channel/UCiz7KCGQNHCEjtoUpuMfF9g/videos" target="_blank">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 border-0 gap-2 w-full sm:w-auto transform transition-all duration-300 shadow-lg shadow-pink-500/25"
+                  >
+                    <Play className="w-5 h-5" />
+                    Escuchar último episodio
+                  </Button>
+                </Link>
+                <Link href="/ser-invitado" passHref>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="gap-2 border-white/30 text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 w-full sm:w-auto transform transition-all duration-300"
+                  >
+                    <Mic className="w-5 h-5" />
+                    Ser invitado
+                  </Button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
         </motion.div>
       </section>
-
-      {/* Quienes Somos Section */}
-      <QuienesSomos />
 
       {/* Interactive Tip Section */}
       <section className="py-16 bg-slate-50">
@@ -193,6 +176,9 @@ export default function Home() {
           <TipDelDia />
         </div>
       </section>
+
+      {/* Quienes Somos Section */}
+      <QuienesSomos />
 
       {/* Stats Section */}
       <motion.section ref={statsRef} className="py-16 relative overflow-hidden">
@@ -210,7 +196,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="glass-card p-8 rounded-xl backdrop-blur-md"
             >
-              <div className="text-4xl sm:text-5xl font-bold mb-2">100+</div>
+              <div className="text-4xl sm:text-5xl font-bold mb-2">5+</div>
               <div className="text-lg opacity-90">Episodios</div>
             </motion.div>
 
@@ -221,7 +207,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="glass-card p-8 rounded-xl backdrop-blur-md"
             >
-              <div className="text-4xl sm:text-5xl font-bold mb-2">50K+</div>
+              <div className="text-4xl sm:text-5xl font-bold mb-2">10K+</div>
               <div className="text-lg opacity-90">Oyentes mensuales</div>
             </motion.div>
 
@@ -232,7 +218,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="glass-card p-8 rounded-xl backdrop-blur-md sm:col-span-2 md:col-span-1"
             >
-              <div className="text-4xl sm:text-5xl font-bold mb-2">200+</div>
+              <div className="text-4xl sm:text-5xl font-bold mb-2">10+</div>
               <div className="text-lg opacity-90">Historias compartidas</div>
             </motion.div>
           </div>
@@ -249,7 +235,7 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-indigo-600">
+            <h2 className="text-4xl font-SuperDream mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-indigo-600">
               Últimos Episodios
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">Descubre nuestras conversaciones más recientes</p>
@@ -301,13 +287,14 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-indigo-600">
-              Tu Voz Importa
+            <h2 className="text-4xl font-SuperDream bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-indigo-600">
+              TU VOZ IMPORTA
             </h2>
+            <Lottie animationData={people} loop={true} className="w-80 h-80 mx-auto" />
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
               Compartí tus ideas, sugerencias, preguntas para futuros episodios o simplemente saludá!
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-pink-500 to-indigo-600 mx-auto mt-6 rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-pink-500 to-indigo-600 mx-auto mt-4 rounded-full"></div>
           </motion.div>
 
           <CommetSection />

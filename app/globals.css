@@ -30,6 +30,14 @@ body {
   .smooth-scroll {
     scroll-behavior: smooth;
   }
+  .font-denaria {
+    font-family: "Denaria Demo", cursive;
+    letter-spacing: 0.05em;
+  }
+  .font-SuperDream {
+    font-family: "Super Dream", cursive;
+    letter-spacing: 0.05em;
+  }
 }
 
 @layer base {

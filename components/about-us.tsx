@@ -163,15 +163,6 @@ const QuienesSomos = () => {
                   </div>
                 </div>
               </motion.div>
-
-              <motion.div
-                className="absolute -bottom-6 -right-6 bg-white p-4 rounded-full shadow-xl z-10"
-                initial={{ opacity: 0, scale: 0.8, rotate: 15 }}
-                animate={isInView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.8, rotate: 15 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-              >
-                <Image src="/bgUp.png" alt="Logo" width={60} height={60} className="rounded-full" />
-              </motion.div>
             </div>
           </motion.div>
         </div>

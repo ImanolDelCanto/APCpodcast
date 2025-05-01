@@ -10,7 +10,6 @@ const CafecitoSupport = () => {
       {/* Fondo con gradiente */}
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-indigo-600 z-0">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url('/noise.png')" }}></div>
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">

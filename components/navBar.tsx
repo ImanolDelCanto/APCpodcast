@@ -5,8 +5,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
+import Lottie from "lottie-react"
+import mic from "@/animations/mic.json"
 
 // Optimized throttle function
 function throttle<T extends unknown[]>(callback: (...args: T) => void, delay: number) {
@@ -117,11 +118,11 @@ const Navbar = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="font-bold text-xl flex items-center">
-              <div className="relative w-8 h-8 mr-2">
-                <Image src="/bgUp.png" alt="Algo Para Contar Logo" fill className="object-contain" priority />
+              <div className="relative w-16 h-16 mr-2">
+                <Lottie animationData={mic} loop={false} className="absolute top-0 left-0 w-full h-full" />
               </div>
               <span
-                className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} transition-colors duration-200`}
+                className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} transition-colors duration-200 font-denaria tracking-wide`}
               >
                 Algo Para Contar
               </span>
