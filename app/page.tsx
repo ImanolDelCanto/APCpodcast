@@ -11,9 +11,11 @@ import CafecitoSupport from "@/components/cafecito"
 import { motion, useAnimation, useInView } from "framer-motion"
 import { fetchYouTubeVideos, type Video } from "./actions/youtube"
 import CommetSection from "@/components/commet-section"
-import TipDelDia from "@/components/tip"
-import Lottie from 'lottie-react';
 import people from "@/animations/people.json"
+import TipDelDia from "@/components/tip"
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Home() {
   const controls = useAnimation()

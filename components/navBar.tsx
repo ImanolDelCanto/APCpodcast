@@ -6,10 +6,13 @@ import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
-import Lottie from "lottie-react"
 import mic from "@/animations/mic.json"
+import dynamic from "next/dynamic";
 
-// Optimized throttle function
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+
+
+
 function throttle<T extends unknown[]>(callback: (...args: T) => void, delay: number) {
   let lastCall = 0
   return (...args: T) => {
@@ -40,13 +43,19 @@ const NavItem = memo(
       <Link
         href={href}
         className={`${
-          isHomePage && !isScrolled ? "text-white" : isActive ? "text-[#FF7B7B]" : "text-gray-600"
+          isHomePage && !isScrolled
+            ? "text-white"
+            : isActive
+            ? "text-[#FF7B7B]"
+            : "text-gray-600"
         } hover:text-[#FF7B7B] transition-colors relative group`}
         onClick={onClick}
       >
         {label}
         <span
-          className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF7B7B] transition-all duration-200 group-hover:w-full ${isActive ? "w-full" : ""}`}
+          className={`absolute -bottom-1 left-0 h-0.5 bg-[#FF7B7B] transition-all duration-200 group-hover:w-full ${
+            isActive ? "w-full" : "w-0"
+          }`}
         ></span>
       </Link>
     )
@@ -63,17 +72,15 @@ const Navbar = () => {
   const isHomePage = pathname === "/"
   const navRef = useRef<HTMLDivElement>(null)
 
-  // Optimized scroll handler with throttling
   useEffect(() => {
     const handleScroll = throttle(() => {
       setIsScrolled(window.scrollY > 20)
 
-      // Calculate scroll progress for the indicator
       const scrollTop = window.scrollY
       const docHeight = document.body.offsetHeight - window.innerHeight
       const scrollPercent = scrollTop / docHeight
       setScrollProgress(scrollPercent)
-    }, 100) // Throttle to 100ms for better performance
+    }, 100)
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
@@ -83,7 +90,6 @@ const Navbar = () => {
     setIsMenuOpen((prev) => !prev)
   }, [])
 
-  // Close menu on route change
   useEffect(() => {
     setIsMenuOpen(false)
   }, [pathname])
@@ -122,7 +128,9 @@ const Navbar = () => {
                 <Lottie animationData={mic} loop={false} className="absolute top-0 left-0 w-full h-full" />
               </div>
               <span
-                className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} transition-colors duration-200 font-denaria tracking-wide`}
+                className={`${
+                  isHomePage && !isScrolled ? "text-white" : "text-black"
+                } transition-colors duration-200 font-denaria tracking-wide`}
               >
                 Algo Para Contar
               </span>

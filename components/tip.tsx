@@ -4,7 +4,9 @@ import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import listen from "@/animations/listen.json" 
-import Lottie from "lottie-react"
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 // Array de tips que rotarán según la fecha
 const tips = [
