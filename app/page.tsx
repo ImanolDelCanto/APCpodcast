@@ -14,6 +14,7 @@ import CommetSection from "@/components/commet-section"
 import people from "@/animations/people.json"
 import TipDelDia from "@/components/tip"
 import dynamic from "next/dynamic";
+import FloatingSocialIcons from "@/components/floating-social.icons"
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -147,6 +148,21 @@ export default function Home() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
+              <Link href="/ser-invitado" passHref>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="relative group w-full sm:w-auto overflow-hidden rounded-md px-6 py-3 border border-white/20 text-white bg-white/10 backdrop-blur-md hover:bg-gradient-to-r from-pink-500/20 to-purple-500/30 hover:border-pink-500/40 transition-all duration-300 ease-out hover:scale-[1.03] hover:shadow-lg hover-lift"
+                >
+                  {/* Brillo animado al pasar el mouse */}
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" />
+
+                  {/* Icono con leve flotación */}
+                  <Mic className="w-5 h-5 mr-2 text-white group-hover:animate-float transition-transform duration-300" />
+
+                  <span className="z-10 relative">Ser invitado</span>
+                </Button>
+              </Link>
                 <Link href="https://www.youtube.com/channel/UCiz7KCGQNHCEjtoUpuMfF9g/videos" target="_blank">
                   <Button
                     size="lg"
@@ -156,22 +172,13 @@ export default function Home() {
                     Escuchar último episodio
                   </Button>
                 </Link>
-                <Link href="/ser-invitado" passHref>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="gap-2 border-white/30 text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 w-full sm:w-auto transform transition-all duration-300"
-                  >
-                    <Mic className="w-5 h-5" />
-                    Ser invitado
-                  </Button>
-                </Link>
               </motion.div>
             </motion.div>
           </div>
         </motion.div>
       </section>
-
+      <FloatingSocialIcons />
+      
       {/* Interactive Tip Section */}
       <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4">

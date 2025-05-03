@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Youtube, Instagram, AudioLines, ArrowRight, Mail, MapPin, Phone } from "lucide-react"
 import { motion } from "framer-motion"
+import { FaTiktok } from "react-icons/fa"
 
 const FooterLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <motion.li whileHover={{ x: 5 }} whileTap={{ scale: 0.95 }}>
@@ -148,14 +149,7 @@ const Footer = () => {
               <SocialLink
                 href="https://www.tiktok.com/@algoparacontarpodcast"
                 icon={
-                  <Image
-                    className="w-6 h-6 transition-transform duration-300 hover:scale-110"
-                    height={24}
-                    width={24}
-                    src="/tiktokicon.svg"
-                    alt="TikTok"
-                    loading="lazy"
-                  />
+                  <FaTiktok className="w-6 h-6 transition-transform duration-300 hover:scale-110" />
                 }
                 label="TikTok"
               />
