@@ -25,6 +25,7 @@
     "date-fns": "^4.1.0",
     "fast-xml-parser": "^4.3.4",
     "framer-motion": "^12.4.7",
+    "gsap": "^3.13.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.475.0",
     "motion": "^12.4.7",
