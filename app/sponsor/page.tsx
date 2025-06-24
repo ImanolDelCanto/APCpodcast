@@ -150,7 +150,7 @@ export default function SponsorPage() {
           <motion.div variants={fadeInUp} className="relative order-2 md:order-1">
             <div className="relative rounded-3xl overflow-hidden shadow-xl">
               <Image
-                src="/placeholder.svg?height=600&width=600"
+                src=""
                 alt="Patrocinio"
                 className="w-full aspect-square object-cover transform hover:scale-105 transition-transform duration-700"
                 height={600}
