@@ -18,7 +18,7 @@ export default function Hero() {
       gsap.set(elements, {
         opacity: 0,
         scale: 0,
-        rotation: Math.random() * 360 // <--- Cambiado, ya no usa 'i'
+        rotation: Math.random() * 360 
       })
 
       // Configurar burbujas también

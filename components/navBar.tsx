@@ -12,17 +12,6 @@ import dynamic from "next/dynamic";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 
-
-function throttle<T extends unknown[]>(callback: (...args: T) => void, delay: number) {
-  let lastCall = 0
-  return (...args: T) => {
-    const now = Date.now()
-    if (now - lastCall < delay) return
-    lastCall = now
-    callback(...args)
-  }
-}
-
 const NavItem = memo(
   ({
     href,
@@ -67,20 +56,17 @@ NavItem.displayName = "NavItem"
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [scrollProgress, setScrollProgress] = useState(0)
   const pathname = usePathname()
   const isHomePage = pathname === "/"
   const navRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const handleScroll = throttle(() => {
+    const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
+    }
 
-      const scrollTop = window.scrollY
-      const docHeight = document.body.offsetHeight - window.innerHeight
-      const scrollPercent = scrollTop / docHeight
-      setScrollProgress(scrollPercent)
-    }, 100)
+    // Ejecutar al montar para setear el estado correcto
+    handleScroll()
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
@@ -108,12 +94,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Scroll indicator */}
-      <div
-        className="fixed top-0 left-0 h-1 bg-[#FF7B7B] z-[60] transition-all duration-100"
-        style={{ width: `${scrollProgress * 100}%` }}
-      />
-
       <motion.nav
         ref={navRef}
         className={navbarClass}
