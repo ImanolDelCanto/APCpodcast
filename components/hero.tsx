@@ -95,18 +95,12 @@ export default function Hero() {
         {/* Burbujas de diálogo */}
         <div 
           ref={addToRefs}
-          className="bubble absolute top-20 left-10 w-16 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm opacity-0"
+          className=" absolute top-20 left-10 w-16 h-16 text-white/40 text-4xl font-bold opacity-0"
         >
-          <span className="text-white text-xs">💭</span>
+          <span className="text-white">💭</span>
         </div>
         
-        <div 
-          ref={addToRefs}
-          className="bubble absolute top-32 right-20 w-20 h-16 bg-pink-500/20 rounded-2xl flex items-center justify-center backdrop-blur-sm opacity-0"
-        >
-          <span className="text-white text-sm">¿...?</span>
-        </div>
-
+      
         <div 
           ref={addToRefs}
           className="bubble absolute bottom-40 left-16 w-24 h-18 bg-purple-500/20 rounded-3xl flex items-center justify-center backdrop-blur-sm opacity-0"
@@ -136,39 +130,34 @@ export default function Hero() {
           ¿
         </div>
 
-        {/* Puntos suspensivos */}
+    
         <div 
           ref={addToRefs}
           className="absolute bottom-32 right-40 text-white/50 text-5xl font-bold opacity-0"
         >
-          ...
+          🎙️​ 
         </div>
 
         <div 
           ref={addToRefs}
           className="absolute top-16 left-1/2 text-indigo-300/40 text-4xl font-bold opacity-0"
         >
-          ...
+          📻​
         </div>
 
         {/* Elementos de libros/páginas */}
         <div 
           ref={addToRefs}
-          className="absolute top-80 left-20 w-8 h-12 bg-amber-200/30 rounded-sm transform rotate-12 backdrop-blur-sm opacity-0"
+          className="absolute top-80 left-20 text-indigo-300/40 text-4xl font-bold opacity-0"
         >
-          <div className="w-full h-1 bg-amber-400/50 mt-2"></div>
-          <div className="w-3/4 h-1 bg-amber-400/50 mt-1"></div>
-          <div className="w-full h-1 bg-amber-400/50 mt-1"></div>
+          🎧​
         </div>
 
         <div 
           ref={addToRefs}
-          className="absolute bottom-20 right-60 w-10 h-14 bg-orange-200/30 rounded-sm transform -rotate-6 backdrop-blur-sm opacity-0"
+          className="absolute bottom-20 right-60 text-indigo-300/40 text-4xl font-bold opacity-0"
         >
-          <div className="w-full h-1 bg-orange-400/50 mt-2"></div>
-          <div className="w-2/3 h-1 bg-orange-400/50 mt-1"></div>
-          <div className="w-full h-1 bg-orange-400/50 mt-1"></div>
-          <div className="w-4/5 h-1 bg-orange-400/50 mt-1"></div>
+          🎧​ 
         </div>
 
         {/* Comillas decorativas */}
@@ -183,7 +172,7 @@ export default function Hero() {
           ref={addToRefs}
           className="absolute bottom-40 left-60 text-pink-300/30 text-6xl font-serif transform rotate-180 opacity-0"
         >
-          &quot;
+          🎙️​
         </div>
 
         {/* Notas musicales para representar el podcast */}
