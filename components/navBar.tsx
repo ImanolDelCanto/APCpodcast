@@ -88,7 +88,6 @@ const Navbar = () => {
 
   const navItems = [
     { href: "/", label: "Inicio" },
-    { href: "/sobre-nosotros", label: "Sobre Nosotros" },
     { href: "/sponsor", label: "Sponsor" },
   ]
 

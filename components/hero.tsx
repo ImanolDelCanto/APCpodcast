@@ -243,6 +243,7 @@ export default function Hero() {
               style={{
                 filter: "drop-shadow(0 0 20px rgba(255, 123, 123, 0.5))",
               }}
+              priority
             />
           </motion.div>
 

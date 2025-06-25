@@ -148,7 +148,7 @@ const QuienesSomos = () => {
                   className="rounded-2xl"
                   height={800}
                   width={800}
-                  loading="lazy"
+                  priority
                   placeholder="blur"
                   blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWNlY2ZmIi8+PC9zdmc+"
                 />
