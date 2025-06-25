@@ -20,6 +20,7 @@
     "@react-email/tailwind": "^1.0.4",
     "@react-spring/web": "^9.7.5",
     "@xata.io/client": "^0.0.0-next.v93343b9646f57a1e5c51c35eccf0767c2bb80baa",
+    "atropos": "^2.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

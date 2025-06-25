@@ -3,6 +3,7 @@ import EpisodeCard from "@/components/episode-card"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { fetchYouTubeVideos, type Video } from "@/app/actions/youtube"
+import Link from "next/link"
 
 
 
@@ -56,13 +57,15 @@ export default function LatestEpisodes() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
             >
-                <Button
-                size="lg"
-                variant="outline"
-                className="border-slate-300 hover:border-slate-400 hover:bg-slate-50 gap-2 transform hover:scale-105 transition-all duration-300"
-                >
-                Ver todos los episodios
-                </Button>
+                <Link href="https://www.youtube.com/channel/UCiz7KCGQNHCEjtoUpuMfF9g/videos" target="_blank" rel="noopener noreferrer">
+                    <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-slate-300 hover:border-slate-400 hover:bg-slate-50 gap-2 transform hover:scale-105 transition-all duration-300"
+                    >
+                    Ver todos los episodios
+                    </Button>
+                </Link>
             </motion.div>
             </div>
         </div>

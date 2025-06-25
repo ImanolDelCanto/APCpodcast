@@ -32,16 +32,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Quienes Somos Section */}
-      <QuienesSomos />
-
-      {/* Stats Section */}
-      <Stats />
-
       {/* Latest Episodes */}
       <section className="py-20 bg-white">
         <LatestEpisodes />
       </section>
+
+      {/* Stats Section */}
+      <Stats />
+   
+      {/* Quienes Somos Section */}
+      <QuienesSomos />
 
       {/* Cafecito Support Section */}
       <CafecitoSupport />
