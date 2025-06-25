@@ -10,12 +10,12 @@ export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    // Retrasar las animaciones hasta que el componente esté montado
-    const timer = setTimeout(() => setIsLoaded(true), 100)
+    // Reducir el delay para acelerar el renderizado inicial
+    const timer = setTimeout(() => setIsLoaded(true), 16) // Un frame
     return () => clearTimeout(timer)
   }, [])
 
-  // Variantes de animación optimizadas
+  // Variantes de animación optimizadas manteniendo el aspecto visual
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -81,127 +81,17 @@ export default function Hero() {
         />
       </div>
 
-      {/* Elementos flotantes optimizados */}
-      {isLoaded && (
-        <motion.div
-          className="absolute inset-0 z-5 pointer-events-none"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Reducir elementos flotantes y optimizar animaciones */}
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute top-20 left-10 text-white/30 text-4xl select-none"
-          >
-            💭
-          </motion.div>
-          
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute bottom-40 left-16 px-3 py-1 bg-purple-500/15 rounded-2xl backdrop-blur-sm border border-white/10"
-            style={{ animationDelay: '1s' }}
-          >
-            <span className="text-white text-xs">¡Hola!</span>
-          </motion.div>
-
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute top-40 right-32 text-white/30 text-4xl font-bold select-none"
-            style={{ animationDelay: '2s' }}
-          >
-            ?
-          </motion.div>
-          
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute bottom-60 right-10 text-pink-300/40 text-5xl font-bold select-none"
-            style={{ animationDelay: '0.5s' }}
-          >
-            ?
-          </motion.div>
-
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute top-60 left-32 text-purple-300/30 text-3xl font-bold select-none"
-            style={{ animationDelay: '1.5s' }}
-          >
-            ¿
-          </motion.div>
-
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute bottom-32 right-40 text-white/40 text-4xl select-none"
-            style={{ animationDelay: '2.5s' }}
-          >
-            🎙️
-          </motion.div>
-
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute top-16 left-1/2 text-indigo-300/30 text-4xl select-none"
-            style={{ animationDelay: '3s' }}
-          >
-            📻
-          </motion.div>
-
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute top-80 left-20 text-indigo-300/30 text-4xl select-none"
-            style={{ animationDelay: '0.8s' }}
-          >
-            🎧
-          </motion.div>
-
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute top-52 right-16 text-purple-300/30 text-3xl select-none"
-            style={{ animationDelay: '1.8s' }}
-          >
-            ♪
-          </motion.div>
-
-          <motion.div 
-            variants={floatingElementVariants}
-            animate={continuousFloat}
-            className="absolute bottom-52 left-40 text-indigo-300/30 text-4xl select-none"
-            style={{ animationDelay: '2.2s' }}
-          >
-            ♫
-          </motion.div>
-        </motion.div>
-      )}
-
-      {/* Círculos decorativos optimizados con CSS puro */}
+      {/* Círculos decorativos optimizados - renderizado inmediato */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-pink-500/8 blur-3xl animate-pulse" 
            style={{ animationDuration: '8s' }} />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-purple-500/8 blur-3xl animate-pulse" 
            style={{ animationDuration: '10s', animationDelay: '2s' }} />
 
-      {/* Contenido principal */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="container mx-auto px-4 py-12 relative z-10 text-white"
-      >
+      {/* Contenido principal - imagen renderizada inmediatamente */}
+      <div className="container mx-auto px-4 py-12 relative z-10 text-white">
         <div className="flex flex-col md:flex-row items-center justify-between w-full">
-          {/* Logo optimizado */}
-          <motion.div
-            className="w-full md:w-1/2 flex justify-center items-center"
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          {/* Logo - sin animación inicial para renderizado inmediato */}
+          <div className="w-full md:w-1/2 flex justify-center items-center">
             <Image
               src="/bgUp.webp"
               alt="Algo Para Contar Podcast"
@@ -212,17 +102,23 @@ export default function Hero() {
                 filter: "drop-shadow(0 0 20px rgba(255, 123, 123, 0.3))",
               }}
               priority
+              fetchPriority="high"
               loading="eager"
+              sizes="(max-width: 768px) 192px, 256px"
+              // Preload hint para la imagen crítica
+              onLoad={() => {
+                // Disparar animaciones después de que la imagen esté cargada
+                if (!isLoaded) setIsLoaded(true)
+              }}
             />
-          </motion.div>
+          </div>
 
-          {/* Contenido de texto */}
+          {/* Contenido de texto con animación reducida pero manteniendo aspecto */}
           <motion.div
             className="w-full md:w-1/2 text-center md:text-left mt-8 md:mt-0"
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.2 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl mb-4 font-SuperDream">
               Sé nuestro próximo invitado
@@ -254,8 +150,110 @@ export default function Hero() {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
 
+      {/* Elementos flotantes - con optimización de will-change para mejor performance */}
+      {isLoaded && (
+        <motion.div
+          className="absolute inset-0 z-5 pointer-events-none"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ willChange: 'transform' }}
+        >
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute top-20 left-10 text-white/30 text-4xl select-none"
+            style={{ willChange: 'transform' }}
+          >
+            💭
+          </motion.div>
+          
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute bottom-40 left-16 px-3 py-1 bg-purple-500/15 rounded-2xl backdrop-blur-sm border border-white/10"
+            style={{ animationDelay: '1s', willChange: 'transform' }}
+          >
+            <span className="text-white text-xs">¡Hola!</span>
+          </motion.div>
+
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute top-40 right-32 text-white/30 text-4xl font-bold select-none"
+            style={{ animationDelay: '2s', willChange: 'transform' }}
+          >
+            ?
+          </motion.div>
+          
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute bottom-60 right-10 text-pink-300/40 text-5xl font-bold select-none"
+            style={{ animationDelay: '0.5s', willChange: 'transform' }}
+          >
+            ?
+          </motion.div>
+
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute top-60 left-32 text-purple-300/30 text-3xl font-bold select-none"
+            style={{ animationDelay: '1.5s', willChange: 'transform' }}
+          >
+            ¿
+          </motion.div>
+
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute bottom-32 right-40 text-white/40 text-4xl select-none"
+            style={{ animationDelay: '2.5s', willChange: 'transform' }}
+          >
+            🎙️
+          </motion.div>
+
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute top-16 left-1/2 text-indigo-300/30 text-4xl select-none"
+            style={{ animationDelay: '3s', willChange: 'transform' }}
+          >
+            📻
+          </motion.div>
+
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute top-80 left-20 text-indigo-300/30 text-4xl select-none"
+            style={{ animationDelay: '0.8s', willChange: 'transform' }}
+          >
+            🎧
+          </motion.div>
+
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute top-52 right-16 text-purple-300/30 text-3xl select-none"
+            style={{ animationDelay: '1.8s', willChange: 'transform' }}
+          >
+            ♪
+          </motion.div>
+
+          <motion.div 
+            variants={floatingElementVariants}
+            animate={continuousFloat}
+            className="absolute bottom-52 left-40 text-indigo-300/30 text-4xl select-none"
+            style={{ animationDelay: '2.2s', willChange: 'transform' }}
+          >
+            ♫
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* CSS optimizado para mejor performance */}
       <style jsx>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
