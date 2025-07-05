@@ -1,202 +1,179 @@
-"use client"
-import Image from "next/image"
-import { Play, Mic } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
+import React, { useState, useEffect } from 'react';
+import { Play, Users, Heart, MessageCircle, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from './ui/button';
 
-export default function OptimizedHero() {
-  const [isVisible, setIsVisible] = useState(false)
+export default function PodcastHero() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [currentPhrase, setCurrentPhrase] = useState(0);
+
+  const phrases = [
+    "Cada historia merece ser contada...",
+    "Cada persona tiene algo único que compartir...",
+    "Cada conversación puede cambiar una vida...",
+    "Cada momento tiene su historia..."
+  ];
 
   useEffect(() => {
-    // Trigger animations after component mounts
-    const timer = setTimeout(() => setIsVisible(true), 100)
-    return () => clearTimeout(timer)
-  }, [])
+    const timer = setTimeout(() => setIsLoaded(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPhrase((prev) => (prev + 1) % phrases.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Optimized background with pure CSS */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
-        {/* Simplified noise texture */}
-        <div className="absolute inset-0 opacity-5 bg-noise" />
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 pt-20 sm:pt-24 md:pt-0">
+      
+      {/* Background simple y limpio */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        
+        {/* Solo 2 efectos de luz sutiles */}
+        <div className="absolute top-1/4 left-1/3 w-32 h-32 md:w-64 md:h-64 lg:w-96 lg:h-96 bg-purple-500/8 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/3 w-24 h-24 md:w-48 md:h-48 lg:w-72 lg:h-72 bg-pink-500/6 rounded-full blur-3xl animate-pulse-slow" style={{animationDelay: '2s'}} />
       </div>
 
-      {/* Optimized decorative circles - pure CSS animations */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-pink-500/8 blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-purple-500/8 blur-3xl animate-pulse-slow-delayed" />
-
-      {/* Main content */}
-      <div className="container mx-auto px-4 py-12 relative z-10 text-white">
-        <div className="flex flex-col md:flex-row items-center justify-between w-full">
-          {/* Optimized logo section */}
-          <div className="w-full md:w-1/2 flex justify-center items-center">
-            <div
-              className={`transition-all duration-1000 ease-out ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+      {/* Contenido principal */}
+      <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16 relative z-10 max-w-7xl">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 xl:gap-32">
+          
+          {/* Sección visual - Simplificada */}
+          <div className="flex-1 flex justify-center lg:justify-end order-2 lg:order-1">
+            <div 
+              className={`relative transition-all duration-1000 ease-out ${
+                isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+              }`}
             >
-              <Image
-                src="/bgUp.webp"
-                alt="Algo Para Contar Podcast"
-                width={300}
-                height={300}
-                className="w-48 h-48 md:w-64 md:h-64 object-contain drop-shadow-glow"
-                priority
-                fetchPriority="high"
-                loading="eager"
-                sizes="(max-width: 768px) 192px, 256px"
-                quality={85}
-              />
+              {/* Imagen principal */}
+              <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+                <Image 
+                  src="/heart.webp" 
+                  alt="Corazón del podcast" 
+                  width={384} 
+                  height={384} 
+                  className="w-full h-full object-cover rounded-full shadow-2xl"
+                  priority
+                />
+                
+                {/* Glow sutil */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-sm animate-pulse" />
+              </div>
+
+              {/* Solo 3 elementos decorativos pequeños */}
+              <div className="absolute -top-4 -right-4 w-12 h-12 md:w-16 md:h-16 bg-purple-500/10 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center animate-float">
+                <MessageCircle className="w-6 h-6 md:w-8 md:h-8 text-purple-300" />
+              </div>
+              
+              <div className="absolute -bottom-4 -left-4 w-14 h-14 md:w-18 md:h-18 bg-pink-500/10 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center animate-float" style={{animationDelay: '1s'}}>
+                <Heart className="w-7 h-7 md:w-9 md:h-9 text-pink-300" />
+              </div>
+
+              <div className="absolute top-1/4 -left-8 w-10 h-10 md:w-12 md:h-12 bg-amber-500/10 backdrop-blur-sm rounded-full border border-white/10 flex items-center justify-center animate-float" style={{animationDelay: '2s'}}>
+                <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-amber-300" />
+              </div>
             </div>
           </div>
 
-          {/* Text content with optimized animations */}
-          <div
-            className={`w-full md:w-1/2 text-center md:text-left mt-8 md:mt-0 transition-all duration-1000 ease-out delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          {/* Sección de texto */}
+          <div 
+            className={`flex-1 text-center lg:text-left space-y-6 lg:space-y-8 order-1 lg:order-2 transition-all duration-1000 ease-out ${
+              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl mb-4 font-SuperDream">Sé nuestro próximo invitado</h2>
-            <p className="text-lg text-gray-200 mb-6 max-w-xl">
-              Un podcast donde las historias cobran vida y las conversaciones te hacen pensar, reír y sentir.
-            </p>
+            {/* Título principal */}
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight font-SuperDream">
+                <span className="block">Sé nuestro </span>
+                <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
+                  próximo invitado
+                </span>
+              </h1>
+              
+              {/* Frase dinámica */}
+              <div className="h-8 md:h-10 flex items-center justify-center lg:justify-start">
+                <p className="text-lg md:text-xl text-gray-300 transition-opacity duration-500">
+                  {phrases[currentPhrase]}
+                </p>
+              </div>
+            </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Link href="/ser-invitado" passHref>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="group w-full sm:w-auto rounded-md px-6 py-3 border border-white/20 text-white bg-white/10 backdrop-blur-md hover:bg-gradient-to-r hover:from-pink-500/20 hover:to-purple-500/30 hover:border-pink-500/40 transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                >
-                  <Mic className="w-5 h-5 mr-2 text-white" />
-                  Ser invitado
+            {/* Descripción */}
+            <div className="space-y-4 max-w-2xl mx-auto lg:mx-0">
+              <p className="text-base md:text-lg text-gray-300 leading-relaxed">
+                Bienvenido a un espacio donde las voces se encuentran con las emociones, 
+                donde cada invitado trae consigo un universo de experiencias esperando ser descubiertas.
+              </p>
+              
+              <p className="text-sm md:text-base text-gray-400 leading-relaxed">
+                No es solo un podcast, es un viaje a través de las historias que nos definen, 
+                nos conectan y nos inspiran a seguir escribiendo nuestro propio capítulo.
+              </p>
+            </div>
+
+            {/* Botones */}
+  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start">
+              <Link href="https://www.youtube.com/channel/UCiz7KCGQNHCEjtoUpuMfF9g" className="w-full sm:w-auto" target='_blank' rel='noopener noreferrer'>
+                <Button className="w-full sm:w-auto min-w-[220px] h-14 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-2xl text-white font-semibold text-base transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl hover:shadow-purple-500/30 flex items-center justify-center gap-3 border-0 focus-visible:ring-2 focus-visible:ring-purple-400">
+                  <Play className="w-5 h-5 flex-shrink-0" />
+                  <span>Escucha las historias</span>
                 </Button>
               </Link>
-              <Link href="https://www.youtube.com/channel/UCiz7KCGQNHCEjtoUpuMfF9g/videos" target="_blank">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 border-0 gap-2 w-full sm:w-auto transition-all duration-300 shadow-lg shadow-pink-500/25 hover:scale-105"
-                >
-                  <Play className="w-5 h-5" />
-                  Escuchar último episodio
+              <Link href="/ser-invitado" className="w-full sm:w-auto" rel='noopener noreferrer'>
+                <Button className="w-full sm:w-auto min-w-[220px] h-14 px-8 py-4 border-2 border-white/30 hover:border-purple-400/70 rounded-2xl text-white font-semibold text-base backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl hover:shadow-white/20 flex items-center justify-center gap-3 focus-visible:ring-2 focus-visible:ring-white/50">
+                  <Users className="w-5 h-5 flex-shrink-0" />
+                  <span>Comparte tu historia</span>
                 </Button>
               </Link>
+            </div>
+
+            {/* Mensaje inspiracional */}
+            <div className="pt-4">
+              <p className="text-sm text-purple-200/80 italic max-w-lg mx-auto lg:mx-0">
+                &quot;Porque detrás de cada micrófono hay un alma, y detrás de cada historia, hay una vida esperando ser compartida.&quot;
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Simplified floating elements - pure CSS animations */}
-      <div
-        className={`absolute inset-0 z-5 pointer-events-none transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
-      >
-        {/* Reduced number of floating elements for better performance */}
-        <div className="absolute top-20 left-10 text-white/30 text-4xl select-none animate-float-1">💭</div>
-        <div className="absolute bottom-40 left-16 px-3 py-1 bg-purple-500/15 rounded-2xl backdrop-blur-sm border border-white/10 animate-float-2">
-          <span className="text-white text-xs">¡Hola!</span>
-        </div>
-        <div className="absolute top-40 right-32 text-white/30 text-4xl font-bold select-none animate-float-3">?</div>
-        <div className="absolute bottom-60 right-10 text-pink-300/40 text-5xl font-bold select-none animate-float-4">
-          ?
-        </div>
-        <div className="absolute top-60 left-32 text-purple-300/30 text-3xl font-bold select-none animate-float-5">
-          ¿
-        </div>
-        <div className="absolute bottom-32 right-40 text-white/40 text-4xl select-none animate-float-6">🎙️</div>
-      </div>
-
-      {/* Optimized CSS animations */}
       <style jsx>{`
-        .bg-noise {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-          background-size: 200px 200px;
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.4; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.05); }
         }
 
-        .drop-shadow-glow {
-          filter: drop-shadow(0 0 20px rgba(255, 123, 123, 0.3));
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
         }
 
         .animate-pulse-slow {
           animation: pulse-slow 8s ease-in-out infinite;
         }
 
-        .animate-pulse-slow-delayed {
-          animation: pulse-slow 10s ease-in-out infinite;
-          animation-delay: 2s;
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
         }
 
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.08; }
-          50% { opacity: 0.12; }
+        /* Optimización para performance */
+        .animate-pulse-slow,
+        .animate-float {
+          will-change: transform, opacity;
         }
 
-        .animate-float-1 {
-          animation: float-1 6s ease-in-out infinite;
-        }
-
-        .animate-float-2 {
-          animation: float-2 7s ease-in-out infinite;
-          animation-delay: 1s;
-        }
-
-        .animate-float-3 {
-          animation: float-3 8s ease-in-out infinite;
-          animation-delay: 2s;
-        }
-
-        .animate-float-4 {
-          animation: float-4 6.5s ease-in-out infinite;
-          animation-delay: 0.5s;
-        }
-
-        .animate-float-5 {
-          animation: float-5 7.5s ease-in-out infinite;
-          animation-delay: 1.5s;
-        }
-
-        .animate-float-6 {
-          animation: float-6 9s ease-in-out infinite;
-          animation-delay: 2.5s;
-        }
-
-        @keyframes float-1 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        @keyframes float-2 {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-10px) scale(1.05); }
-        }
-
-        @keyframes float-3 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-12px) rotate(-3deg); }
-        }
-
-        @keyframes float-4 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-18px) rotate(8deg); }
-        }
-
-        @keyframes float-5 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-8px) rotate(-5deg); }
-        }
-
-        @keyframes float-6 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-14px) rotate(3deg); }
-        }
-
-        /* Hardware acceleration for better performance */
-        .animate-float-1,
-        .animate-float-2,
-        .animate-float-3,
-        .animate-float-4,
-        .animate-float-5,
-        .animate-float-6 {
-          will-change: transform;
-          transform: translateZ(0);
+        /* Mejoras para mobile */
+        @media (max-width: 640px) {
+          .animate-float {
+            animation-duration: 4s;
+          }
         }
       `}</style>
     </div>
-  )
+  );
 }

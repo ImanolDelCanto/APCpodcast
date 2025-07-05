@@ -43,7 +43,7 @@ export default function Stats() {
               className="glass-card p-8 rounded-xl backdrop-blur-md"
             >
               <div className="text-4xl sm:text-5xl font-bold mb-2">10K+</div>
-              <div className="text-lg opacity-90">Oyentes mensuales</div>
+              <div className="text-lg opacity-90">Oyentes</div>
             </motion.div>
 
             <motion.div

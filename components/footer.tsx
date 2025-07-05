@@ -155,27 +155,75 @@ const Footer = () => {
             </div>
           </motion.div>
         </div>
-
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-          <div className="overflow-hidden mb-4">
-            <div className="animate-marquee inline-block whitespace-nowrap">
-              <span className="mx-4">Desarrollo personal</span>
-              <span className="mx-4">•</span>
-              <span className="mx-4">Historias inspiradoras</span>
-              <span className="mx-4">•</span>
-              <span className="mx-4">Conversaciones profundas</span>
-              <span className="mx-4">•</span>
-              <span className="mx-4">Experiencias transformadoras</span>
-              <span className="mx-4">•</span>
-              <span className="mx-4">Desarrollo personal</span>
-              <span className="mx-4">•</span>
-              <span className="mx-4">Historias inspiradoras</span>
-              <span className="mx-4">•</span>
-              <span className="mx-4">Conversaciones profundas</span>
+<div className="border-t border-gray-800 mt-12 pt-8 text-center">
+          <div className="overflow-hidden mb-4 relative">
+            <div className="flex animate-marquee-continuous whitespace-nowrap">
+              <div className="flex items-center">
+                <span className="mx-6">Desarrollo personal</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Historias inspiradoras</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Conversaciones profundas</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Experiencias transformadoras</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Conexiones auténticas</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Crecimiento personal</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+              </div>
+              <div className="flex items-center">
+                <span className="mx-6">Desarrollo personal</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Historias inspiradoras</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Conversaciones profundas</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Experiencias transformadoras</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Conexiones auténticas</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+                <span className="mx-6">Crecimiento personal</span>
+                <span className="mx-2 text-[#FF7B7B]">•</span>
+              </div>
             </div>
           </div>
           <p className="text-gray-400">© {currentYear} Algo Para Contar. Todos los derechos reservados.</p>
         </div>
+
+        <style jsx>{`
+          @keyframes marquee-continuous {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+
+          .animate-marquee-continuous {
+            animation: marquee-continuous 15s linear infinite;
+            will-change: transform;
+          }
+
+          /* Más rápido en mobile */
+          @media (max-width: 768px) {
+            .animate-marquee-continuous {
+              animation: marquee-continuous 10s linear infinite;
+            }
+          }
+
+          /* Pausa la animación al hacer hover */
+          .animate-marquee-continuous:hover {
+            animation-play-state: paused;
+          }
+
+          /* Optimización para performance */
+          .animate-marquee-continuous {
+            backface-visibility: hidden;
+            perspective: 1000px;
+          }
+        `}</style>
       </div>
     </footer>
   )

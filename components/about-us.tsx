@@ -147,7 +147,7 @@
                         <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                         <span className="text-sm font-medium">Grabando episodios semanalmente</span>
                       </div>
-                      <p className="text-sm opacity-80">Más de 100 episodios y contando</p>
+                      <p className="text-sm opacity-80">Más de 10 episodios y contando</p>
                     </div>
                   </div>
                 </motion.div>
